@@ -7,6 +7,7 @@ import { ArrowLeft, Github, ExternalLink, Sun, Moon } from "lucide-react"
 import Link from "next/link"
 import { LanguageToggle } from "@/components/language-toggle"
 import { useTheme } from "@/hooks/useTheme"
+import { useLanguage } from "@/hooks/useLanguage"
 
 const translations = {
   en: {
@@ -37,13 +38,9 @@ const translations = {
 
 export function ProjectPageClient({ project, slug }: { project: any; slug: string }) {
   const { theme, toggleTheme } = useTheme()
-  const [language, setLanguage] = useState<"en" | "es">("en")
+  const { language, toggleLanguage } = useLanguage()
 
   const t = translations[language]
-
-  const toggleLanguage = () => {
-    setLanguage(language === "en" ? "es" : "en")
-  }
 
   return (
     <div className="min-h-screen transition-colors duration-300 relative">

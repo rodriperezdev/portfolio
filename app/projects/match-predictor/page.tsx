@@ -7,33 +7,83 @@ import { Button } from '@/components/ui/button';
 import { LanguageToggle } from '@/components/language-toggle';
 import { getApiUrl } from '@/lib/api-config';
 
-// Import data
-import { 
-  presidentialTerms, 
-  economicEvents, 
-  indecManipulationPeriod, 
-  deflationPeriod 
-} from '@/data/argentina-data';
-import { translations, Language } from '@/data/translations';
-
 // Import components
-import { PriceConverter } from '@/components/inflation/PriceConverter';
-import { InflationChart } from '@/components/inflation/InflationChart';
-import { DataQualityNotice } from '@/components/inflation/DataQualityNotice';
-import { CurrentStats } from '@/components/inflation/CurrentStats';
+import { PredictionForm } from '@/components/match-predictor/PredictionForm';
+import { StatsDisplay } from '@/components/match-predictor/StatsDisplay';
 
 // Import hooks
-import { useInflationData } from '@/hooks/useInflationData';
+import { useMatchPredictorData } from '@/hooks/useMatchPredictorData';
 import { useTheme } from '@/hooks/useTheme';
 import { useLanguage } from '@/hooks/useLanguage';
 
 // Get API URL from centralized config
-const API_BASE_URL = getApiUrl('inflation');
+const API_BASE_URL = getApiUrl('match-predictor');
 
-export default function InflationTrackerPage() {
+const translations = {
+  en: {
+    backToPortfolio: 'Back to Portfolio',
+    title: 'Football Match Predictor',
+    subtitle: 'Predict match outcomes using machine learning models trained on Argentine Primera División data',
+    overview: 'Overview',
+    overviewText: 'This project uses machine learning to predict football match outcomes in the Argentine Primera División. The model analyzes team form, goal differences, head-to-head records, and other statistical features to make predictions. Built with Python, FastAPI, scikit-learn, and XGBoost. The model achieves approximately 40-50% accuracy on test data, which is significantly better than random chance (33%) for a three-outcome prediction task. Each prediction includes probability distributions for all possible outcomes, allowing users to assess the confidence level of each forecast.',
+    loading: 'Loading data...',
+    error: 'Error loading data',
+    retry: 'Retry',
+    viewCode: 'View Code',
+    apiDocs: 'API Documentation',
+    makePrediction: 'Make a Prediction',
+    homeTeam: 'Home Team',
+    awayTeam: 'Away Team',
+    selectHomeTeam: 'Select home team',
+    selectAwayTeam: 'Select away team',
+    predict: 'Predict',
+    prediction: 'Prediction',
+    confidence: 'Confidence',
+    homeWin: 'Home Win',
+    draw: 'Draw',
+    awayWin: 'Away Win',
+    win: 'Win',
+    totalMatches: 'Total Matches',
+    homeWins: 'Home Wins',
+    draws: 'Draws',
+    awayWins: 'Away Wins',
+    selectDifferentTeams: 'Please select two different teams',
+  },
+  es: {
+    backToPortfolio: 'Volver al Portfolio',
+    title: 'Predictor de Partidos de Fútbol',
+    subtitle: 'Predice resultados de partidos usando modelos de aprendizaje automático entrenados con datos de la Primera División Argentina',
+    overview: 'Descripción General',
+    overviewText: 'Este proyecto utiliza aprendizaje automático para predecir resultados de partidos de fútbol en la Primera División Argentina. El modelo analiza la forma de los equipos, diferencias de goles, historial cara a cara y otras características estadísticas para hacer predicciones. Construido con Python, FastAPI, scikit-learn y XGBoost. El modelo logra aproximadamente 40-50% de precisión en datos de prueba, lo cual es significativamente mejor que el azar (33%) para una tarea de predicción de tres resultados. Cada predicción incluye distribuciones de probabilidad para todos los resultados posibles, permitiendo a los usuarios evaluar el nivel de confianza de cada pronóstico.',
+    loading: 'Cargando datos...',
+    error: 'Error al cargar datos',
+    retry: 'Reintentar',
+    viewCode: 'Ver Código',
+    apiDocs: 'Documentación API',
+    makePrediction: 'Hacer una Predicción',
+    homeTeam: 'Equipo Local',
+    awayTeam: 'Equipo Visitante',
+    selectHomeTeam: 'Seleccionar equipo local',
+    selectAwayTeam: 'Seleccionar equipo visitante',
+    predict: 'Predecir',
+    prediction: 'Predicción',
+    confidence: 'Confianza',
+    homeWin: 'Victoria Local',
+    draw: 'Empate',
+    awayWin: 'Victoria Visitante',
+    win: 'Gana',
+    totalMatches: 'Total de Partidos',
+    homeWins: 'Victorias Locales',
+    draws: 'Empates',
+    awayWins: 'Victorias Visitantes',
+    selectDifferentTeams: 'Por favor selecciona dos equipos diferentes',
+  },
+};
+
+export default function MatchPredictorPage() {
   const { language, toggleLanguage } = useLanguage();
   const { theme, toggleTheme } = useTheme();
-  const { inflationData, currentStats, loading, error } = useInflationData(API_BASE_URL);
+  const { teams, stats, loading, error } = useMatchPredictorData(API_BASE_URL);
   
   const t = translations[language];
   
@@ -110,7 +160,7 @@ export default function InflationTrackerPage() {
             {t.subtitle}
           </p>
           <div className="flex gap-2 flex-wrap mb-4 sm:mb-6">
-            {['Python', 'FastAPI', 'FRED API', 'SQLAlchemy', 'Next.js', 'Recharts'].map(tag => (
+            {['Python', 'FastAPI', 'scikit-learn', 'XGBoost', 'Machine Learning', 'Next.js'].map(tag => (
               <span key={tag} className="px-3 sm:px-4 py-1 sm:py-1.5 border border-[rgb(var(--foreground))]/20 rounded-full text-xs sm:text-sm">
                 {tag}
               </span>
@@ -118,7 +168,7 @@ export default function InflationTrackerPage() {
           </div>
           <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4">
             <Button size="lg" className="border-black text-sm sm:text-base min-h-[44px] w-full sm:w-auto" asChild>
-              <a href="https://github.com/yourusername/inflation-tracker" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
+              <a href="https://github.com/rodri-perezz1998/match-predictor-backend" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
                 <Github className="h-5 w-5" />
                 {t.viewCode}
               </a>
@@ -135,43 +185,13 @@ export default function InflationTrackerPage() {
         {/* Overview */}
         <div className="mb-8 sm:mb-12 border border-[rgb(var(--foreground))]/10 rounded-2xl p-4 sm:p-6 md:p-8 bg-[rgb(var(--card))] shadow-sm">
           <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">{t.overview}</h2>
-          <p className="text-sm sm:text-base text-[rgb(var(--foreground))] opacity-70 leading-relaxed mb-4 sm:mb-6">{t.overviewText}</p>
-          
-          {/* Data Sources & Methodology */}
-          <div className="pt-6 mt-6 border-t border-[rgb(var(--foreground))]/10">
-            <h3 className="text-lg font-semibold mb-3 text-[rgb(var(--foreground))] opacity-90">{t.dataSourcesTitle}</h3>
-            <p className="text-sm text-[rgb(var(--foreground))] opacity-70 leading-relaxed mb-3">{t.dataSourcesText}</p>
-            <p className="text-xs text-[rgb(var(--foreground))] opacity-60 italic">{t.dataQualityNote}</p>
-          </div>
+          <p className="text-sm sm:text-base text-[rgb(var(--foreground))] opacity-70 leading-relaxed">{t.overviewText}</p>
         </div>
 
-        {/* Data Quality Notice */}
-        <DataQualityNotice translations={t} />
-
-        {/* Price Converter */}
-        <PriceConverter
-          apiUrl={API_BASE_URL}
-          language={language}
-          theme={theme}
-          translations={t}
-        />
-
-        {/* Current Stats */}
-        <CurrentStats
-          stats={currentStats}
-          language={language}
-          translations={t}
-        />
-
-        {/* Inflation Chart */}
-        <InflationChart
-          data={inflationData}
-          language={language}
-          theme={theme}
-          translations={t}
-          loading={loading}
-        />
+        {/* Prediction Form */}
+        <PredictionForm apiUrl={API_BASE_URL} teams={teams} translations={t} />
       </div>
     </div>
   );
 }
+

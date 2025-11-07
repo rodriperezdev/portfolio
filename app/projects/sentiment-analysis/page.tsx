@@ -22,11 +22,12 @@ import { RecentPosts } from '@/components/sentiment/RecentPosts';
 // Import hooks
 import { useSentimentData } from '@/hooks/useSentimentData';
 import { useTheme } from '@/hooks/useTheme';
+import { useLanguage } from '@/hooks/useLanguage';
 
 const API_BASE_URL = getApiUrl('sentiment');
 
 export default function SentimentAnalysisPage() {
-  const [language, setLanguage] = useState<Language>('en');
+  const { language, toggleLanguage } = useLanguage();
   const [timeRange, setTimeRange] = useState<TimeRange>('weekly');
   
   const { theme, toggleTheme } = useTheme();
@@ -117,7 +118,7 @@ export default function SentimentAnalysisPage() {
             </Button>
 
             {/* Language Toggle */}
-            <LanguageToggle language={language} onToggle={() => setLanguage(language === "en" ? "es" : "en")} />
+            <LanguageToggle language={language} onToggle={toggleLanguage} />
 
             {/* Theme Toggle */}
             <Button

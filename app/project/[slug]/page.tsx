@@ -205,6 +205,40 @@ const projectData: Record<string, any> = {
     github: "https://github.com/yourusername/inflation-tracker",
     demo: "/projects/inflation-tracker",
   },
+  "match-predictor": {
+    title: {
+      en: "Football Match Predictor",
+      es: "Predictor de Partidos de Fútbol"
+    },
+    description: {
+      en: "Predict match outcomes using machine learning models trained on Argentine Primera División data. Built with Python, FastAPI, scikit-learn, and XGBoost.",
+      es: "Predice resultados de partidos usando modelos de aprendizaje automático entrenados con datos de la Primera División Argentina. Construido con Python, FastAPI, scikit-learn y XGBoost.",
+    },
+    fullDescription: {
+      en: "This project uses machine learning to predict football match outcomes in the Argentine Primera División. The model analyzes team form, goal differences, head-to-head records, and other statistical features to make predictions. Built with Python, FastAPI, scikit-learn, and XGBoost, it provides accurate predictions with probability distributions for each possible outcome.",
+      es: "Este proyecto utiliza aprendizaje automático para predecir resultados de partidos de fútbol en la Primera División Argentina. El modelo analiza la forma de los equipos, diferencias de goles, historial cara a cara y otras características estadísticas para hacer predicciones. Construido con Python, FastAPI, scikit-learn y XGBoost, proporciona predicciones precisas con distribuciones de probabilidad para cada resultado posible.",
+    },
+    tags: ["Python", "FastAPI", "scikit-learn", "XGBoost", "Machine Learning", "Next.js"],
+    features: {
+      en: [
+        "Machine learning-based match prediction",
+        "Team form and statistics analysis",
+        "Head-to-head record tracking",
+        "Probability distribution for outcomes",
+        "RESTful API with FastAPI",
+      ],
+      es: [
+        "Predicción de partidos basada en aprendizaje automático",
+        "Análisis de forma y estadísticas de equipos",
+        "Seguimiento de historial cara a cara",
+        "Distribución de probabilidades para resultados",
+        "API RESTful con FastAPI",
+      ],
+    },
+    technologies: ["Python", "FastAPI", "scikit-learn", "XGBoost", "pandas", "Next.js", "TypeScript"],
+    github: "https://github.com/rodri-perezz1998/match-predictor-backend",
+    demo: "/projects/match-predictor",
+  },
 }
 
 export default async function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {

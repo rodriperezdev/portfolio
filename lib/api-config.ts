@@ -8,6 +8,7 @@
  * - Create a .env.local file in the portfolio root
  * - Add: NEXT_PUBLIC_INFLATION_API_URL=http://localhost:8002
  * - Add: NEXT_PUBLIC_SENTIMENT_API_URL=http://localhost:8000
+ * - Add: NEXT_PUBLIC_MATCH_PREDICTOR_API_URL=http://localhost:8003
  * 
  * For production:
  * - Set these in your hosting platform's environment variables
@@ -45,9 +46,31 @@ const getSentimentApiUrl = () => {
 
 export const SENTIMENT_API_URL = getSentimentApiUrl();
 
+// Match Predictor API
+const getMatchPredictorApiUrl = () => {
+  if (process.env.NEXT_PUBLIC_MATCH_PREDICTOR_API_URL) {
+    return process.env.NEXT_PUBLIC_MATCH_PREDICTOR_API_URL;
+  }
+  // Only use production URL if explicitly in production mode
+  if (process.env.NODE_ENV === 'production') {
+    return 'https://match-predictor-api.yourdomain.com'; // Update with your production URL
+  }
+  // Default to localhost for development
+  return 'http://localhost:8003';
+};
+
+export const MATCH_PREDICTOR_API_URL = getMatchPredictorApiUrl();
+
 // Helper to get API URL with validation
-export function getApiUrl(project: 'inflation' | 'sentiment'): string {
-  const url = project === 'inflation' ? INFLATION_API_URL : SENTIMENT_API_URL;
+export function getApiUrl(project: 'inflation' | 'sentiment' | 'match-predictor'): string {
+  let url: string;
+  if (project === 'inflation') {
+    url = INFLATION_API_URL;
+  } else if (project === 'sentiment') {
+    url = SENTIMENT_API_URL;
+  } else {
+    url = MATCH_PREDICTOR_API_URL;
+  }
   
   if (process.env.NODE_ENV === 'development') {
     console.log(`🔧 ${project.toUpperCase()} API URL:`, url);
@@ -57,12 +80,13 @@ export function getApiUrl(project: 'inflation' | 'sentiment'): string {
 }
 
 // Type-safe project names
-export type ApiProject = 'inflation' | 'sentiment';
+export type ApiProject = 'inflation' | 'sentiment' | 'match-predictor';
 
 // Export all API URLs for convenience
 export const API_URLS = {
   inflation: INFLATION_API_URL,
   sentiment: SENTIMENT_API_URL,
+  'match-predictor': MATCH_PREDICTOR_API_URL,
 } as const;
 
 // Validate API URLs in development
@@ -72,6 +96,9 @@ if (process.env.NODE_ENV === 'development') {
   }
   if (!process.env.NEXT_PUBLIC_SENTIMENT_API_URL) {
     console.warn('⚠️ NEXT_PUBLIC_SENTIMENT_API_URL not set, using default: http://localhost:8000');
+  }
+  if (!process.env.NEXT_PUBLIC_MATCH_PREDICTOR_API_URL) {
+    console.warn('⚠️ NEXT_PUBLIC_MATCH_PREDICTOR_API_URL not set, using default: http://localhost:8003');
   }
 }
 

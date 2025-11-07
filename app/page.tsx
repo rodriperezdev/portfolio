@@ -7,6 +7,7 @@ import { Sun, Moon, Github, Linkedin, Mail, Phone } from "lucide-react"
 import { LanguageToggle } from "@/components/language-toggle"
 import { ProjectCarousel } from "@/components/project-carousel"
 import { useTheme } from "@/hooks/useTheme"
+import { useLanguage } from "@/hooks/useLanguage"
 
 const translations = {
   en: {
@@ -16,11 +17,11 @@ const translations = {
       contact: "Contact",
     },
     hero: {
-      greeting: "Hello, I'm",
-      name: "Your Name",
-      title: "Back-End & Data Science Developer",
+      greeting: "HELLO, I'M",
+      name: "Rodri",
+      title: "Back-End Developer & Data Analyst",
       description:
-        "I'm a bilingual developer specializing in back-end architecture and data science solutions. With expertise in Python, Node.js, and machine learning frameworks, I build scalable systems that transform data into actionable insights. My passion lies in creating robust APIs, optimizing database performance, and developing intelligent algorithms that solve real-world problems.",
+        "I'm a developer based in Argentina. I specialize in Python and its web frameworks, database management, and RESTful API development. I also have knowledge on data science libraries to turn raw data into useful insights for your business. I'm a quick learner, always exploring new technologies.",
     },
     projects: {
       title: "Featured Projects",
@@ -46,11 +47,11 @@ const translations = {
       contact: "Contacto",
     },
     hero: {
-      greeting: "Hola, soy",
-      name: "Tu Nombre",
-      title: "Desarrollador Back-End y Ciencia de Datos",
+      greeting: "HOLA, SOY",
+      name: "Rodri",
+      title: "Desarrollador Back-End y Analista de Datos",
       description:
-        "Soy un desarrollador bilingüe especializado en arquitectura back-end y soluciones de ciencia de datos. Con experiencia en Python, Node.js y frameworks de aprendizaje automático, construyo sistemas escalables que transforman datos en información accionable. Mi pasión radica en crear APIs robustas, optimizar el rendimiento de bases de datos y desarrollar algoritmos inteligentes que resuelven problemas del mundo real.",
+        "Soy un desarrollador basado en Argentina, me especializo en Python y sus frameworks web, gestión de bases de datos y desarrollo de APIs RESTful. También tengo conocimiento en librerías de ciencia de datos para convertir datos en bruto en información útil para tu negocio. Aprendo rápido y siempre estoy explorando nuevas tecnologías para dominar.",
     },
     projects: {
       title: "Proyectos Destacados",
@@ -98,6 +99,18 @@ const projects = [
   },
   {
     title: {
+      en: "Football Match Predictor",
+      es: "Predictor de Partidos de Fútbol"
+    },
+    description: {
+      en: "Predict match outcomes using machine learning models trained on Argentine Primera División data. Built with Python, FastAPI, scikit-learn, and XGBoost.",
+      es: "Predice resultados de partidos usando modelos de aprendizaje automático entrenados con datos de la Primera División Argentina. Construido con Python, FastAPI, scikit-learn y XGBoost.",
+    },
+    tags: ["Python", "FastAPI", "scikit-learn", "XGBoost", "Machine Learning", "Next.js"],
+    slug: "match-predictor",
+  },
+  {
+    title: {
       en: "Predictive Maintenance System",
       es: "Sistema de Mantenimiento Predictivo"
     },
@@ -124,13 +137,9 @@ const projects = [
 
 export default function Portfolio() {
   const { theme, toggleTheme } = useTheme()
-  const [language, setLanguage] = useState<"en" | "es">("en")
+  const { language, toggleLanguage } = useLanguage()
 
   const t = translations[language]
-
-  const toggleLanguage = () => {
-    setLanguage(language === "en" ? "es" : "en")
-  }
 
   const scrollToSection = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" })
