@@ -9,7 +9,6 @@ import { getApiUrl } from '@/lib/api-config';
 
 // Import components
 import { PredictionForm } from '@/components/match-predictor/PredictionForm';
-import { StatsDisplay } from '@/components/match-predictor/StatsDisplay';
 
 // Import hooks
 import { useMatchPredictorData } from '@/hooks/useMatchPredictorData';
@@ -48,6 +47,8 @@ const translations = {
     draws: 'Draws',
     awayWins: 'Away Wins',
     selectDifferentTeams: 'Please select two different teams',
+    noRecentMatches: 'No recent matches found',
+    disclaimer: '* This predictor was created for educational purposes only and should not be used as a reliable source for predicting match results or making betting decisions.',
   },
   es: {
     backToPortfolio: 'Volver al Portfolio',
@@ -77,6 +78,8 @@ const translations = {
     draws: 'Empates',
     awayWins: 'Victorias Visitantes',
     selectDifferentTeams: 'Por favor selecciona dos equipos diferentes',
+    noRecentMatches: 'No se encontraron partidos recientes',
+    disclaimer: '* Este predictor fue creado únicamente con fines educativos y no debe ser utilizado como fuente confiable para predecir resultados de partidos o tomar decisiones de apuestas.',
   },
 };
 
@@ -185,11 +188,12 @@ export default function MatchPredictorPage() {
         {/* Overview */}
         <div className="mb-8 sm:mb-12 border border-[rgb(var(--foreground))]/10 rounded-2xl p-4 sm:p-6 md:p-8 bg-[rgb(var(--card))] shadow-sm">
           <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">{t.overview}</h2>
-          <p className="text-sm sm:text-base text-[rgb(var(--foreground))] opacity-70 leading-relaxed">{t.overviewText}</p>
+          <p className="text-sm sm:text-base text-[rgb(var(--foreground))] opacity-70 leading-relaxed mb-3">{t.overviewText}</p>
+          <p className="text-xs text-[rgb(var(--foreground))] opacity-50 italic">{t.disclaimer}</p>
         </div>
 
         {/* Prediction Form */}
-        <PredictionForm apiUrl={API_BASE_URL} teams={teams} translations={t} />
+        <PredictionForm apiUrl={API_BASE_URL} teams={teams} translations={t} language={language} />
       </div>
     </div>
   );

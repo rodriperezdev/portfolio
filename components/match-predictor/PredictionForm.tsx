@@ -9,6 +9,7 @@ interface PredictionFormProps {
   apiUrl: string;
   teams: string[];
   translations: any;
+  language?: 'en' | 'es';
 }
 
 interface PredictionResponse {
@@ -21,7 +22,7 @@ interface PredictionResponse {
   confidence: number;
 }
 
-export function PredictionForm({ apiUrl, teams, translations: t }: PredictionFormProps) {
+export function PredictionForm({ apiUrl, teams, translations: t, language = 'en' }: PredictionFormProps) {
   const [homeTeam, setHomeTeam] = useState<string>('');
   const [awayTeam, setAwayTeam] = useState<string>('');
   const [prediction, setPrediction] = useState<PredictionResponse | null>(null);
@@ -110,12 +111,12 @@ export function PredictionForm({ apiUrl, teams, translations: t }: PredictionFor
         onClick={handlePredict}
         disabled={loading || !homeTeam || !awayTeam || homeTeam === awayTeam}
         size="lg"
-        className="border-black text-sm sm:text-base min-h-[44px] w-full sm:w-auto"
+        className="border-2 border-red-600 dark:border-red-500 text-red-700 dark:text-red-500 bg-white dark:bg-transparent hover:bg-red-600 dark:hover:bg-red-600 hover:border-red-600 dark:hover:border-red-600 hover:text-white dark:hover:text-white text-sm sm:text-base font-medium transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px] w-full sm:w-auto"
       >
         {loading ? (t.loading || 'Loading...') : (t.predict || 'Predict')}
       </Button>
 
-      {prediction && <PredictionResult prediction={prediction} homeTeam={homeTeam} awayTeam={awayTeam} translations={t} />}
+      {prediction && <PredictionResult prediction={prediction} homeTeam={homeTeam} awayTeam={awayTeam} apiUrl={apiUrl} translations={t} language={language} />}
     </div>
   );
 }

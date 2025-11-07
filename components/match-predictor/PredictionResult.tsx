@@ -1,5 +1,7 @@
 'use client';
 
+import { RecentMatches } from './RecentMatches';
+
 interface PredictionResultProps {
   prediction: {
     prediction: string;
@@ -12,10 +14,12 @@ interface PredictionResultProps {
   };
   homeTeam: string;
   awayTeam: string;
+  apiUrl: string;
   translations: any;
+  language?: 'en' | 'es';
 }
 
-export function PredictionResult({ prediction, homeTeam, awayTeam, translations: t }: PredictionResultProps) {
+export function PredictionResult({ prediction, homeTeam, awayTeam, apiUrl, translations: t, language = 'en' }: PredictionResultProps) {
   const formatPercent = (value: number) => {
     return `${(value * 100).toFixed(1)}%`;
   };
@@ -30,11 +34,19 @@ export function PredictionResult({ prediction, homeTeam, awayTeam, translations:
   const getPredictionText = (pred: string) => {
     if (pred === 'Home Win') return `${homeTeam} ${t.win || 'Win'}`;
     if (pred === 'Away Win') return `${awayTeam} ${t.win || 'Win'}`;
-    return pred; // Keep "Draw" as is
+    if (pred === 'Draw') return t.draw || 'Draw';
+    return pred; // Fallback
   };
 
   return (
     <div className="mt-8 space-y-4">
+      {/* Recent Matches Context */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <RecentMatches apiUrl={apiUrl} teamName={homeTeam} translations={t} language={language} />
+        <RecentMatches apiUrl={apiUrl} teamName={awayTeam} translations={t} language={language} />
+      </div>
+
+      {/* Prediction Result */}
       <div className="border border-[rgb(var(--foreground))]/10 rounded-2xl p-6 bg-[rgb(var(--card))] shadow-sm">
         <div className="text-sm opacity-60 mb-2">{t.prediction || 'Prediction'}</div>
         <div className={`text-3xl font-bold ${getPredictionColor(prediction.prediction)}`}>
@@ -45,6 +57,7 @@ export function PredictionResult({ prediction, homeTeam, awayTeam, translations:
         </div>
       </div>
 
+      {/* Probability Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="border border-[rgb(var(--foreground))]/10 rounded-2xl p-6 bg-[rgb(var(--card))] shadow-sm">
           <div className="text-sm opacity-60 mb-2">{homeTeam} {t.win || 'Win'}</div>
