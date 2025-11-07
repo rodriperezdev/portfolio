@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { formatCurrency, formatPercent } from '@/lib/inflation-utils';
-import { Language } from '@/data/translations';
+import { Language, Translations } from '@/data/translations';
 
 interface ConversionResult {
   original_amount: number;
@@ -18,10 +18,10 @@ interface PriceConverterProps {
   apiUrl: string;
   language: Language;
   theme: 'light' | 'dark';
-  translations: any;
+  translations: Translations;
 }
 
-export function PriceConverter({ apiUrl, language, theme, translations: t }: PriceConverterProps) {
+export function PriceConverter({ apiUrl, language: _language, theme, translations: t }: PriceConverterProps) {
   const [amount, setAmount] = useState('');
   const [fromDate, setFromDate] = useState<string>('');
   const [toDate, setToDate] = useState<string>('');

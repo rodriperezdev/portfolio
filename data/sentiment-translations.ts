@@ -66,3 +66,4 @@ export const translations = {
 export type Language = 'en' | 'es';
 export type TranslationKey = keyof typeof translations.en;
 
+

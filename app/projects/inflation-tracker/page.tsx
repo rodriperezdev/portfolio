@@ -145,7 +145,7 @@ export default function InflationTrackerPage() {
         </div>
 
         {/* Data Quality Notice */}
-        <DataQualityNotice language={language} translations={t} />
+        <DataQualityNotice translations={t} />
 
         {/* Price Converter */}
         <PriceConverter

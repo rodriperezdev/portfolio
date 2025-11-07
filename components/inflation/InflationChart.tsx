@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect, useMemo, useCallback } from 'react';
+import type { TooltipProps } from 'recharts';
 import { 
   AreaChart, 
   Area, 
@@ -16,7 +17,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { debounce, getOptimalTooltipPosition, getTermForDate, getEconomicEventForDate, isInManipulationPeriod } from '@/lib/inflation-utils';
 import { presidentialTerms, economicEvents, indecManipulationPeriod, deflationPeriod } from '@/data/argentina-data';
-import { Language } from '@/data/translations';
+import { Language, Translations } from '@/data/translations';
 
 interface InflationData {
   date: string;
@@ -29,7 +30,7 @@ interface InflationChartProps {
   data: InflationData[];
   language: Language;
   theme: 'light' | 'dark';
-  translations: any;
+  translations: Translations;
   loading: boolean;
 }
 
@@ -137,7 +138,7 @@ export function InflationChart({ data, language, theme, translations: t, loading
   }, []);
 
   // Custom Tooltip with smart positioning that flips to right in rightmost zone
-  const CustomTooltip = ({ active, payload, label, coordinate }: any) => {
+  const CustomTooltip = ({ active, payload, label, coordinate }: TooltipProps<number, string>) => {
     const tooltipRef = useRef<HTMLDivElement>(null);
     const updateTimeoutRef = useRef<NodeJS.Timeout | null>(null);
     const [tooltipSide, setTooltipSide] = useState<'left' | 'right'>('left');
@@ -184,7 +185,7 @@ export function InflationChart({ data, language, theme, translations: t, loading
     
     if (!active || !payload || !payload.length || !coordinate) return null;
     
-    const tooltipStyle: any = {
+    const tooltipStyle: React.CSSProperties = {
       backgroundColor: theme === 'dark' ? '#282828' : '#f8f6f3',
       border: '1px solid ' + (theme === 'dark' ? '#ffffff20' : '#00000020'),
       borderRadius: '12px',
@@ -247,7 +248,7 @@ export function InflationChart({ data, language, theme, translations: t, loading
         <p style={{ marginBottom: '8px', fontWeight: 600, fontSize: '13px' }}>
           {formatFullDate(label)}
         </p>
-        {payload.map((entry: any, index: number) => {
+        {payload?.map((entry, index: number) => {
           const value = entry.value ?? 0;
           const sign = value >= 0 ? '+' : '';
           return (
@@ -438,7 +439,7 @@ export function InflationChart({ data, language, theme, translations: t, loading
                     fillOpacity={1}
                     fill="url(#colorAnnual)"
                     name={t.annual}
-                    dot={(dotProps: any) => {
+                    dot={(dotProps: { cx?: number; cy?: number; payload?: InflationData }) => {
                       const term = getTermForDate(dotProps.payload?.date);
                       const economicEvent = getEconomicEventForDate(dotProps.payload?.date);
                       const event = term || economicEvent;
@@ -448,7 +449,7 @@ export function InflationChart({ data, language, theme, translations: t, loading
                         const xAxisLineY = 280;
                         const eventDate = term ? term.date : economicEvent?.date;
                         
-                        const handleMouseEnter = (e: any) => {
+                        const handleMouseEnter = (e: React.MouseEvent) => {
                           e.stopPropagation();
                           const coords = { cx: dotProps.cx, cy: dotY };
                           setHoveredEvent(eventDate || '');
@@ -458,7 +459,7 @@ export function InflationChart({ data, language, theme, translations: t, loading
                           }));
                         };
                         
-                        const handleMouseLeave = (e: any) => {
+                        const handleMouseLeave = (e: React.MouseEvent) => {
                           e.stopPropagation();
                           setHoveredEvent(null);
                         };
@@ -567,7 +568,7 @@ export function InflationChart({ data, language, theme, translations: t, loading
                   
                   {/* Customized component to render event labels */}
                   <Customized
-                    component={(props: any) => {
+                    component={(props: { width?: number; height?: number }) => {
                       const chartWidth = props.width || 600;
                       const fontSize = 13;
                       const padding = 10;
@@ -737,5 +738,6 @@ export function InflationChart({ data, language, theme, translations: t, loading
     </div>
   );
 }
+
 
 

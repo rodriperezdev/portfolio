@@ -97,5 +97,7 @@ export const translations = {
 
 export type Language = 'en' | 'es';
 export type TranslationKey = keyof typeof translations.en;
+export type Translations = typeof translations.en;
+
 
 

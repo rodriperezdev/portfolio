@@ -1,13 +1,12 @@
 'use client';
 
-import { Language } from '@/data/translations';
+import { Translations } from '@/data/translations';
 
 interface DataQualityNoticeProps {
-  language: Language;
-  translations: any;
+  translations: Translations;
 }
 
-export function DataQualityNotice({ language, translations: t }: DataQualityNoticeProps) {
+export function DataQualityNotice({ translations: t }: DataQualityNoticeProps) {
   return (
     <div className="mb-8 space-y-4">
       {/* Data Integrity Disclaimer */}

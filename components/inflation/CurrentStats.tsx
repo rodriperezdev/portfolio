@@ -1,6 +1,6 @@
 'use client';
 
-import { Language } from '@/data/translations';
+import { Language, Translations } from '@/data/translations';
 
 interface CurrentStats {
   current_monthly: number;
@@ -13,10 +13,10 @@ interface CurrentStats {
 interface CurrentStatsProps {
   stats: CurrentStats | null;
   language: Language;
-  translations: any;
+  translations: Translations;
 }
 
-export function CurrentStats({ stats, language, translations: t }: CurrentStatsProps) {
+export function CurrentStats({ stats, language: _language, translations: t }: CurrentStatsProps) {
   if (!stats) return null;
 
   return (
@@ -40,5 +40,6 @@ export function CurrentStats({ stats, language, translations: t }: CurrentStatsP
     </div>
   );
 }
+
 
 
