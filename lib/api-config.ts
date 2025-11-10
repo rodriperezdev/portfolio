@@ -9,6 +9,7 @@
  * - Add: NEXT_PUBLIC_INFLATION_API_URL=http://localhost:8002
  * - Add: NEXT_PUBLIC_SENTIMENT_API_URL=http://localhost:8000
  * - Add: NEXT_PUBLIC_MATCH_PREDICTOR_API_URL=http://localhost:8003
+ * - Add: NEXT_PUBLIC_BUSINESS_ANALYSIS_API_URL=http://localhost:8004
  * 
  * For production:
  * - Set these in your hosting platform's environment variables
@@ -61,15 +62,32 @@ const getMatchPredictorApiUrl = () => {
 
 export const MATCH_PREDICTOR_API_URL = getMatchPredictorApiUrl();
 
+// Business Analysis API
+const getBusinessAnalysisApiUrl = () => {
+  if (process.env.NEXT_PUBLIC_BUSINESS_ANALYSIS_API_URL) {
+    return process.env.NEXT_PUBLIC_BUSINESS_ANALYSIS_API_URL;
+  }
+  // Only use production URL if explicitly in production mode
+  if (process.env.NODE_ENV === 'production') {
+    return 'https://business-analysis-api.yourdomain.com'; // Update with your production URL
+  }
+  // Default to localhost for development
+  return 'http://localhost:8004';
+};
+
+export const BUSINESS_ANALYSIS_API_URL = getBusinessAnalysisApiUrl();
+
 // Helper to get API URL with validation
-export function getApiUrl(project: 'inflation' | 'sentiment' | 'match-predictor'): string {
+export function getApiUrl(project: 'inflation' | 'sentiment' | 'match-predictor' | 'business-analysis'): string {
   let url: string;
   if (project === 'inflation') {
     url = INFLATION_API_URL;
   } else if (project === 'sentiment') {
     url = SENTIMENT_API_URL;
-  } else {
+  } else if (project === 'match-predictor') {
     url = MATCH_PREDICTOR_API_URL;
+  } else {
+    url = BUSINESS_ANALYSIS_API_URL;
   }
   
   if (process.env.NODE_ENV === 'development') {
@@ -80,13 +98,14 @@ export function getApiUrl(project: 'inflation' | 'sentiment' | 'match-predictor'
 }
 
 // Type-safe project names
-export type ApiProject = 'inflation' | 'sentiment' | 'match-predictor';
+export type ApiProject = 'inflation' | 'sentiment' | 'match-predictor' | 'business-analysis';
 
 // Export all API URLs for convenience
 export const API_URLS = {
   inflation: INFLATION_API_URL,
   sentiment: SENTIMENT_API_URL,
   'match-predictor': MATCH_PREDICTOR_API_URL,
+  'business-analysis': BUSINESS_ANALYSIS_API_URL,
 } as const;
 
 // Validate API URLs in development
@@ -99,6 +118,9 @@ if (process.env.NODE_ENV === 'development') {
   }
   if (!process.env.NEXT_PUBLIC_MATCH_PREDICTOR_API_URL) {
     console.warn('⚠️ NEXT_PUBLIC_MATCH_PREDICTOR_API_URL not set, using default: http://localhost:8003');
+  }
+  if (!process.env.NEXT_PUBLIC_BUSINESS_ANALYSIS_API_URL) {
+    console.warn('⚠️ NEXT_PUBLIC_BUSINESS_ANALYSIS_API_URL not set, using default: http://localhost:8004');
   }
 }
 

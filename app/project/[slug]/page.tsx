@@ -239,6 +239,42 @@ const projectData: Record<string, any> = {
     github: "https://github.com/rodri-perezz1998/match-predictor-backend",
     demo: "/projects/match-predictor",
   },
+  "business-analysis": {
+    title: {
+      en: "Business Analytics",
+      es: "Análisis de Negocios"
+    },
+    description: {
+      en: "Input business data and get comprehensive analysis with metrics, benchmarks, and actionable insights. Built with Python, FastAPI, and Next.js.",
+      es: "Ingresa datos de tu negocio y obtén un análisis completo con métricas, benchmarks e insights accionables. Construido con Python, FastAPI y Next.js.",
+    },
+    fullDescription: {
+      en: "This tool allows you to input your business metrics and receive a comprehensive analysis including financial calculations, industry benchmarking, and actionable insights. Perfect for startups, small businesses, and entrepreneurs who want to understand their business performance and identify areas for improvement. The system calculates key metrics like gross margin, net margin, CAC, LTV, burn rate, and more, then compares them against industry benchmarks to provide actionable recommendations.",
+      es: "Esta herramienta te permite ingresar las métricas de tu negocio y recibir un análisis completo que incluye cálculos financieros, benchmarking de la industria e insights accionables. Perfecto para startups, pequeñas empresas y emprendedores que quieren entender el rendimiento de su negocio e identificar áreas de mejora. El sistema calcula métricas clave como margen bruto, margen neto, CAC, LTV, tasa de quema y más, luego las compara con benchmarks de la industria para proporcionar recomendaciones accionables.",
+    },
+    tags: ["Python", "FastAPI", "Pydantic", "Next.js", "TypeScript", "Recharts"],
+    features: {
+      en: [
+        "Financial metrics calculation (margins, profitability, customer economics)",
+        "Industry benchmarking against standards",
+        "Actionable insights with prioritized recommendations",
+        "What-if scenario analysis",
+        "RESTful API with FastAPI",
+        "Interactive charts and visualizations",
+      ],
+      es: [
+        "Cálculo de métricas financieras (márgenes, rentabilidad, economía de clientes)",
+        "Benchmarking de la industria contra estándares",
+        "Insights accionables con recomendaciones priorizadas",
+        "Análisis de escenarios what-if",
+        "API RESTful con FastAPI",
+        "Gráficos y visualizaciones interactivas",
+      ],
+    },
+    technologies: ["Python", "FastAPI", "Pydantic", "pydantic-settings", "Next.js", "TypeScript", "Recharts"],
+    github: "https://github.com/yourusername/business-analysis-backend",
+    demo: "/projects/business-analysis",
+  },
 }
 
 export default async function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {

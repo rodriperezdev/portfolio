@@ -111,6 +111,18 @@ const projects = [
   },
   {
     title: {
+      en: "Business Analytics",
+      es: "Análisis de Negocios"
+    },
+    description: {
+      en: "Input business data and get comprehensive analysis with metrics, benchmarks, and actionable insights. Built with Python, FastAPI, and Next.js.",
+      es: "Ingresa datos de tu negocio y obtén un análisis completo con métricas, benchmarks e insights accionables. Construido con Python, FastAPI y Next.js.",
+    },
+    tags: ["Python", "FastAPI", "Pydantic", "Next.js", "TypeScript", "Recharts"],
+    slug: "business-analysis",
+  },
+  {
+    title: {
       en: "Predictive Maintenance System",
       es: "Sistema de Mantenimiento Predictivo"
     },

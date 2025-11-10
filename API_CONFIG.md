@@ -14,6 +14,12 @@ NEXT_PUBLIC_INFLATION_API_URL=http://localhost:8002
 
 # Sentiment Analysis Backend (runs on port 8000)
 NEXT_PUBLIC_SENTIMENT_API_URL=http://localhost:8000
+
+# Match Predictor Backend (runs on port 8003)
+NEXT_PUBLIC_MATCH_PREDICTOR_API_URL=http://localhost:8003
+
+# Business Analysis Backend (runs on port 8004)
+NEXT_PUBLIC_BUSINESS_ANALYSIS_API_URL=http://localhost:8004
 ```
 
 ### 2. Restart your dev server
@@ -67,6 +73,8 @@ Production URLs should use HTTPS:
 ```env
 NEXT_PUBLIC_INFLATION_API_URL=https://inflation-api.yourdomain.com
 NEXT_PUBLIC_SENTIMENT_API_URL=https://sentiment-api.yourdomain.com
+NEXT_PUBLIC_MATCH_PREDICTOR_API_URL=https://match-predictor-api.yourdomain.com
+NEXT_PUBLIC_BUSINESS_ANALYSIS_API_URL=https://business-analysis-api.yourdomain.com
 ```
 
 ## Troubleshooting
@@ -84,5 +92,7 @@ NEXT_PUBLIC_SENTIMENT_API_URL=https://sentiment-api.yourdomain.com
 Check the console for API URL logs:
 - `🔧 INFLATION API URL: http://localhost:8002`
 - `🔧 SENTIMENT API URL: http://localhost:8000`
+- `🔧 MATCH-PREDICTOR API URL: http://localhost:8003`
+- `🔧 BUSINESS-ANALYSIS API URL: http://localhost:8004`
 
 
