@@ -258,15 +258,17 @@ export default function Portfolio() {
                 
                 {/* Profile image or fallback decorative squares */}
                 {!imageError ? (
-                  <div className="absolute left-1/2 top-1/2 h-48 w-48 sm:h-56 sm:w-56 lg:h-64 lg:w-64 -translate-x-1/2 -translate-y-1/2 relative">
-                    <Image
-                      src="/profile-silhouette.png"
-                      alt="Rodri"
-                      fill
-                      className="object-contain"
-                      onError={() => setImageError(true)}
-                      priority
-                    />
+                  <div className="absolute left-1/2 top-1/2 h-48 w-48 sm:h-56 sm:w-56 lg:h-64 lg:w-64 -translate-x-1/2 -translate-y-1/2">
+                    <div className="relative h-full w-full">
+                      <Image
+                        src="/profile-silhouette.png"
+                        alt="Rodri"
+                        fill
+                        className="object-contain"
+                        onError={() => setImageError(true)}
+                        priority
+                      />
+                    </div>
                   </div>
                 ) : (
                   <>

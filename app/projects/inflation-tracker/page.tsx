@@ -134,8 +134,7 @@ export default function InflationTrackerPage() {
           {/* Data Sources & Methodology */}
           <div className="pt-6 mt-6 border-t border-[rgb(var(--foreground))]/10">
             <h3 className="text-lg font-semibold mb-3" style={{ color: theme === "dark" ? `rgb(255, 255, 255)` : `rgb(var(--foreground))`, opacity: theme === "dark" ? 1 : 0.9 }}>{t.dataSourcesTitle}</h3>
-            <p className="text-sm leading-relaxed mb-3" style={{ color: theme === "dark" ? `rgb(255, 255, 255)` : `rgb(var(--foreground))`, opacity: theme === "dark" ? 1 : 0.7 }}>{t.dataSourcesText}</p>
-            <p className="text-xs italic" style={{ color: theme === "dark" ? `rgb(255, 255, 255)` : `rgb(var(--foreground))`, opacity: theme === "dark" ? 0.8 : 0.6 }}>{t.dataQualityNote}</p>
+            <p className="text-sm leading-relaxed" style={{ color: theme === "dark" ? `rgb(255, 255, 255)` : `rgb(var(--foreground))`, opacity: theme === "dark" ? 1 : 0.7 }}>{t.dataSourcesText}</p>
           </div>
         </div>
 
