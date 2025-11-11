@@ -3,26 +3,27 @@
 import { useState, useEffect } from 'react';
 
 export function useTheme() {
-  // Always initialize with 'dark' to prevent hydration mismatch
+  // Always initialize with 'light' to prevent hydration mismatch
   // The actual theme will be set in useEffect on client side
-  const [theme, setTheme] = useState<'light' | 'dark'>('dark');
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [mounted, setMounted] = useState(false);
   
   useEffect(() => {
     // Mark as mounted to prevent hydration mismatch
     setMounted(true);
     
-    // Check localStorage first
+    // Check localStorage first (script already applied it to DOM)
     const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
     
     if (savedTheme) {
       setTheme(savedTheme);
+      // Ensure DOM matches localStorage (script should have done this, but ensure consistency)
       document.documentElement.classList.toggle('dark', savedTheme === 'dark');
     } else {
-      // Default to dark mode
-      setTheme('dark');
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
+      // Default to light mode (script should have already set this)
+      setTheme('light');
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
     }
   }, []);
   
@@ -34,7 +35,7 @@ export function useTheme() {
   };
   
   // Return default theme until mounted to prevent hydration mismatch
-  return { theme: mounted ? theme : 'dark', toggleTheme };
+  return { theme: mounted ? theme : 'light', toggleTheme };
 }
 
 

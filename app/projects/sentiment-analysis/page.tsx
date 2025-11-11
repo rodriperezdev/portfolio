@@ -153,7 +153,7 @@ export default function SentimentAnalysisPage() {
           </div>
           <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4">
             <Button size="lg" className="border-black text-sm sm:text-base min-h-[44px] w-full sm:w-auto cursor-pointer transition-all duration-200 hover:scale-105 active:scale-95 hover:shadow-lg group" asChild>
-              <a href="https://github.com/rodri-perezz1998/sentiment-analysis-api" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
+              <a href="https://github.com/rodriperezdev/sentiment-analysis-backend" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
                 <Github className="h-5 w-5 transition-transform duration-200 group-hover:rotate-12" />
                 {t.viewCode}
               </a>

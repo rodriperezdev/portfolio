@@ -4,9 +4,10 @@ import { useState } from "react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { Sun, Moon, Github, Linkedin, Mail, Phone } from "lucide-react"
+import { Sun, Moon, Github, Linkedin, Mail, Phone, X } from "lucide-react"
 import { LanguageToggle } from "@/components/language-toggle"
 import { ProjectCarousel } from "@/components/project-carousel"
+import { ContactForm } from "@/components/ContactForm"
 import { useTheme } from "@/hooks/useTheme"
 import { useLanguage } from "@/hooks/useLanguage"
 
@@ -34,7 +35,24 @@ const translations = {
         "I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.",
       phone: "Phone",
       email: "Email",
+      emailHint: "Click to send a message",
       socials: "Find me on",
+      form: {
+        title: "Send me a message",
+        name: "Name",
+        namePlaceholder: "Your name",
+        email: "Email",
+        emailPlaceholder: "your.email@example.com",
+        subject: "Subject",
+        subjectPlaceholder: "What's this about?",
+        message: "Message",
+        messagePlaceholder: "Tell me about your project or idea...",
+        send: "Send Message",
+        sending: "Sending...",
+        success: "Message sent successfully! I'll get back to you soon.",
+        error: "Failed to send message. Please try again or contact me directly.",
+        close: "Close",
+      },
     },
     footer: {
       rights: "All rights reserved.",
@@ -64,7 +82,24 @@ const translations = {
         "Siempre estoy abierto a discutir nuevos proyectos, ideas creativas u oportunidades para ser parte de tu visión.",
       phone: "Teléfono",
       email: "Correo",
+      emailHint: "Haz clic para enviar un mensaje",
       socials: "Encuéntrame en",
+      form: {
+        title: "Envíame un mensaje",
+        name: "Nombre",
+        namePlaceholder: "Tu nombre",
+        email: "Correo",
+        emailPlaceholder: "tu.correo@ejemplo.com",
+        subject: "Asunto",
+        subjectPlaceholder: "¿De qué se trata?",
+        message: "Mensaje",
+        messagePlaceholder: "Cuéntame sobre tu proyecto o idea...",
+        send: "Enviar Mensaje",
+        sending: "Enviando...",
+        success: "¡Mensaje enviado con éxito! Te responderé pronto.",
+        error: "Error al enviar el mensaje. Por favor intenta de nuevo o contáctame directamente.",
+        close: "Cerrar",
+      },
     },
     footer: {
       rights: "Todos los derechos reservados.",
@@ -158,6 +193,7 @@ export default function Portfolio() {
   const { theme, toggleTheme } = useTheme()
   const { language, toggleLanguage } = useLanguage()
   const [imageError, setImageError] = useState(false)
+  const [isEmailDialogOpen, setIsEmailDialogOpen] = useState(false)
 
   const t = translations[language]
 
@@ -329,34 +365,84 @@ export default function Portfolio() {
             </p>
 
             <div className="grid gap-8 md:grid-cols-2">
-              <Card className="group relative overflow-hidden border-2 border-black p-6 transition-all hover:shadow-lg">
+              <Card className="group relative overflow-hidden border-2 border-black transition-all hover:shadow-lg">
                 <div
                   className="absolute right-0 top-0 h-24 w-24 translate-x-8 -translate-y-8 rounded-full"
                   style={{ backgroundColor: `rgb(var(--primary) / 0.05)` }}
                 />
-                <Phone className="mb-4 h-5 w-5 sm:h-6 sm:w-6" style={{ color: `rgb(var(--primary))` }} />
-                <p
-                  className="mb-2 text-xs sm:text-sm font-medium uppercase tracking-wider"
-                  style={{ color: `rgb(var(--muted-foreground))` }}
-                >
-                  {t.contact.phone}
-                </p>
-                <p className="font-mono text-base sm:text-lg">+1 (555) 123-4567</p>
+                <div className="p-6">
+                  <div className="flex flex-col gap-3">
+                    <div className="flex items-center gap-3">
+                      <Phone className="h-5 w-5 sm:h-6 sm:w-6 flex-shrink-0" style={{ color: `rgb(var(--primary))` }} />
+                      <p
+                        className="text-xs sm:text-sm font-medium uppercase tracking-wider"
+                        style={{ color: `rgb(var(--muted-foreground))` }}
+                      >
+                        {t.contact.phone}
+                      </p>
+                    </div>
+                    <p className="font-mono text-base sm:text-lg">+1 (555) 123-4567</p>
+                  </div>
+                </div>
               </Card>
 
-              <Card className="group relative overflow-hidden border-2 border-black p-6 transition-all hover:shadow-lg">
-                <div
-                  className="absolute right-0 top-0 h-24 w-24 translate-x-8 -translate-y-8 rounded-full"
-                  style={{ backgroundColor: `rgb(var(--primary) / 0.05)` }}
-                />
-                <Mail className="mb-4 h-5 w-5 sm:h-6 sm:w-6" style={{ color: `rgb(var(--primary))` }} />
-                <p
-                  className="mb-2 text-xs sm:text-sm font-medium uppercase tracking-wider"
-                  style={{ color: `rgb(var(--muted-foreground))` }}
-                >
-                  {t.contact.email}
-                </p>
-                <p className="font-mono text-base sm:text-lg">hello@example.com</p>
+              <Card 
+                className={`group relative overflow-hidden border-2 border-black transition-all duration-300 hover:shadow-lg ${
+                  isEmailDialogOpen ? 'md:col-span-2' : ''
+                }`}
+              >
+                {!isEmailDialogOpen ? (
+                  <div 
+                    className="p-6 cursor-pointer"
+                    onClick={() => setIsEmailDialogOpen(true)}
+                  >
+                    <div
+                      className="absolute right-0 top-0 h-24 w-24 translate-x-8 -translate-y-8 rounded-full"
+                      style={{ backgroundColor: `rgb(var(--primary) / 0.05)` }}
+                    />
+                    <div className="flex flex-col gap-3">
+                      <div className="flex items-center gap-3">
+                        <Mail className="h-5 w-5 sm:h-6 sm:w-6 flex-shrink-0" style={{ color: `rgb(var(--primary))` }} />
+                        <p
+                          className="text-xs sm:text-sm font-medium uppercase tracking-wider"
+                          style={{ color: `rgb(var(--muted-foreground))` }}
+                        >
+                          {t.contact.email}
+                        </p>
+                      </div>
+                      <p className="font-mono text-base sm:text-lg">hello@example.com</p>
+                      <p 
+                        className="text-xs opacity-60"
+                        style={{ color: `rgb(var(--muted-foreground))` }}
+                      >
+                        {t.contact.emailHint}
+                      </p>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="p-4 sm:p-6 animate-in fade-in slide-in-from-top-2 duration-300">
+                    <div className="flex items-center justify-between mb-4 pb-4 border-b border-black/10 dark:border-white/10">
+                      <div className="flex items-center gap-3">
+                        <Mail className="h-5 w-5 sm:h-6 sm:w-6" style={{ color: `rgb(var(--primary))` }} />
+                        <h3 className="text-lg sm:text-xl font-bold">{t.contact.form.title}</h3>
+                      </div>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => setIsEmailDialogOpen(false)}
+                        className="h-8 w-8 rounded-full border-2 border-black dark:border-white/20 transition-all hover:scale-110 active:scale-95 cursor-pointer"
+                        aria-label="Close"
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </div>
+                    <ContactForm 
+                      translations={t.contact.form} 
+                      onClose={() => setIsEmailDialogOpen(false)}
+                      theme={theme}
+                    />
+                  </div>
+                )}
               </Card>
             </div>
 
@@ -374,7 +460,7 @@ export default function Portfolio() {
                   className="h-12 w-12 rounded-full bg-transparent border-2 border-black hover:shadow-md"
                   asChild
                 >
-                  <a href="https://github.com/rodri-perezz1998" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                  <a href="https://github.com/rodriperezdev" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
                     <Github className="h-5 w-5" />
                   </a>
                 </Button>
