@@ -84,19 +84,27 @@ export function RecentMatches({ apiUrl, teamName, translations: t, language = 'e
 
   return (
     <div className="border border-[rgb(var(--foreground))]/10 rounded-xl p-4 bg-[rgb(var(--card))]">
-      <div className="text-sm font-semibold mb-3">{teamName}</div>
+      <div className="text-sm font-semibold mb-3">
+        {teamName} - {t.recentMatches || (language === 'es' ? 'Partidos Recientes' : 'Recent Matches')}
+      </div>
       <div className="space-y-2">
         {matches.map((match, idx) => {
           // Ensure is_home is a proper boolean - handle various input types
           let isHome: boolean;
           if (typeof match.is_home === 'boolean') {
-            isHome = match.is_home;
-          } else if (typeof match.is_home === 'string') {
-            isHome = match.is_home.toLowerCase() === 'true' || match.is_home === '1';
-          } else if (typeof match.is_home === 'number') {
-            isHome = match.is_home === 1 || match.is_home === 2; // 2 = home team
-          } else {
-            // Default to false if unclear
+            isHome = match.is_home as boolean;
+            if (typeof match.is_home === 'string') {
+              const isHomeStr = match.is_home as string;
+              isHome =
+                isHomeStr.toLowerCase() === 'true' ||
+                isHomeStr === '1' ||
+                isHomeStr.toLowerCase() === 'yes';
+            } else if (typeof match.is_home === 'number') {
+              isHome = match.is_home === 1 || match.is_home === 2; // 2 = home team
+            } else if (typeof match.is_home !== 'boolean') {
+              // Default to false if unclear
+              isHome = false;
+            }
             isHome = false;
           }
           

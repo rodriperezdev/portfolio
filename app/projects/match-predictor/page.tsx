@@ -24,7 +24,7 @@ const translations = {
     title: 'Football Match Predictor',
     subtitle: 'Predict match outcomes using machine learning models trained on Argentine Primera División data',
     overview: 'Overview',
-    overviewText: 'This project uses machine learning to predict football match outcomes in the Argentine Primera División. The model analyzes team form, goal differences, head-to-head records, and other statistical features to make predictions. Built with Python, FastAPI, scikit-learn, and XGBoost. The model achieves approximately 40-50% accuracy on test data, which is significantly better than random chance (33%) for a three-outcome prediction task. Each prediction includes probability distributions for all possible outcomes, allowing users to assess the confidence level of each forecast.',
+    overviewText: 'This project uses machine learning to predict football match outcomes in the Argentine Primera División. The system trains multiple machine learning algorithms—including Logistic Regression, Random Forest, Gradient Boosting, and XGBoost—and automatically selects the best performing model based on accuracy. The model analyzes team form, goal differences, head-to-head records, betting odds, and other statistical features to make predictions. Built with Python, FastAPI, scikit-learn, and XGBoost. The selected model achieves approximately 40-50% accuracy on test data, which is significantly better than random chance (33%) for a three-outcome prediction task. Each prediction includes probability distributions for all possible outcomes, allowing users to assess the confidence level of each forecast.',
     loading: 'Loading data...',
     error: 'Error loading data',
     retry: 'Retry',
@@ -48,6 +48,7 @@ const translations = {
     awayWins: 'Away Wins',
     selectDifferentTeams: 'Please select two different teams',
     noRecentMatches: 'No recent matches found',
+    recentMatches: 'Recent Matches',
     disclaimer: '* This predictor was created for educational purposes only and should not be used as a reliable source for predicting match results or making betting decisions.',
   },
   es: {
@@ -55,7 +56,7 @@ const translations = {
     title: 'Predictor de Partidos de Fútbol',
     subtitle: 'Predice resultados de partidos usando modelos de aprendizaje automático entrenados con datos de la Primera División Argentina',
     overview: 'Descripción General',
-    overviewText: 'Este proyecto utiliza aprendizaje automático para predecir resultados de partidos de fútbol en la Primera División Argentina. El modelo analiza la forma de los equipos, diferencias de goles, historial cara a cara y otras características estadísticas para hacer predicciones. Construido con Python, FastAPI, scikit-learn y XGBoost. El modelo logra aproximadamente 40-50% de precisión en datos de prueba, lo cual es significativamente mejor que el azar (33%) para una tarea de predicción de tres resultados. Cada predicción incluye distribuciones de probabilidad para todos los resultados posibles, permitiendo a los usuarios evaluar el nivel de confianza de cada pronóstico.',
+    overviewText: 'Este proyecto utiliza aprendizaje automático para predecir resultados de partidos de fútbol en la Primera División Argentina. El sistema entrena múltiples algoritmos de aprendizaje automático—incluyendo Regresión Logística, Random Forest, Gradient Boosting y XGBoost—y automáticamente selecciona el modelo con mejor rendimiento basado en precisión. El modelo analiza la forma de los equipos, diferencias de goles, historial cara a cara, cuotas de apuestas y otras características estadísticas para hacer predicciones. Construido con Python, FastAPI, scikit-learn y XGBoost. El modelo seleccionado logra aproximadamente 40-50% de precisión en datos de prueba, lo cual es significativamente mejor que el azar (33%) para una tarea de predicción de tres resultados. Cada predicción incluye distribuciones de probabilidad para todos los resultados posibles, permitiendo a los usuarios evaluar el nivel de confianza de cada pronóstico.',
     loading: 'Cargando datos...',
     error: 'Error al cargar datos',
     retry: 'Reintentar',
@@ -79,6 +80,7 @@ const translations = {
     awayWins: 'Victorias Visitantes',
     selectDifferentTeams: 'Por favor selecciona dos equipos diferentes',
     noRecentMatches: 'No se encontraron partidos recientes',
+    recentMatches: 'Partidos Recientes',
     disclaimer: '* Este predictor fue creado únicamente con fines educativos y no debe ser utilizado como fuente confiable para predecir resultados de partidos o tomar decisiones de apuestas.',
   },
 };

@@ -279,7 +279,7 @@ export default function BusinessAnalysisPage() {
             {t.subtitle}
           </p>
           <div className="flex gap-2 flex-wrap mb-4 sm:mb-6">
-            {['Python', 'FastAPI', 'Pydantic', 'Next.js', 'TypeScript', 'Recharts'].map(tag => (
+            {['Python', 'FastAPI', 'Pydantic', 'Recharts'].map(tag => (
               <span key={tag} className="px-3 sm:px-4 py-1 sm:py-1.5 border border-[rgb(var(--foreground))]/20 rounded-full text-xs sm:text-sm">
                 {tag}
               </span>

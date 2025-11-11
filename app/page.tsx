@@ -23,7 +23,7 @@ const translations = {
       name: "Rodri",
       title: "Back-End Developer & Data Analyst",
       description:
-        "I'm a developer based in Argentina. I specialize in Python and its web frameworks, database management, and RESTful API development. I also have knowledge on data science libraries to turn raw data into useful insights for your business. I'm a quick learner, always exploring new technologies.",
+        "I'm a developer based in Argentina. I specialize in Python and its web frameworks, database management, and RESTful API development. I also work with data science libraries to turn raw data into useful insights for your business. I genuinely enjoy the constant learning that comes with development, there's always a new challenge or tool to figure out.",
     },
     projects: {
       title: "Featured Projects",
@@ -34,6 +34,7 @@ const translations = {
       description:
         "I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.",
       phone: "Phone",
+      phoneHint: "Click to open WhatsApp",
       email: "Email",
       emailHint: "Click to send a message",
       socials: "Find me on",
@@ -70,7 +71,7 @@ const translations = {
       name: "Rodri",
       title: "Desarrollador Back-End y Analista de Datos",
       description:
-        "Soy un desarrollador basado en Argentina, me especializo en Python y sus frameworks web, gestión de bases de datos y desarrollo de APIs RESTful. También tengo conocimiento en librerías de ciencia de datos para convertir datos en bruto en información útil para tu negocio. Aprendo rápido y siempre estoy explorando nuevas tecnologías para dominar.",
+        "Soy un desarrollador basado en Argentina, me especializo en Python y sus frameworks web, gestión de bases de datos y desarrollo de APIs RESTful. También tengo conocimiento en librerías de ciencia de datos para convertir datos en bruto en información útil para tu negocio. Me encanta el aprendizaje constante que viene con el desarrollo, siempre hay un nuevo desafío o herramienta por dominar.",
     },
     projects: {
       title: "Proyectos Destacados",
@@ -81,6 +82,7 @@ const translations = {
       description:
         "Siempre estoy abierto a discutir nuevos proyectos, ideas creativas u oportunidades para ser parte de tu visión.",
       phone: "Teléfono",
+      phoneHint: "Haz clic para abrir WhatsApp",
       email: "Correo",
       emailHint: "Haz clic para enviar un mensaje",
       socials: "Encuéntrame en",
@@ -115,10 +117,10 @@ const projects = [
       es: "Análisis de Negocios"
     },
     description: {
-      en: "Input business data and get comprehensive analysis with metrics, benchmarks, and actionable insights. Built with Python, FastAPI, and Next.js.",
-      es: "Ingresa datos de tu negocio y obtén un análisis completo con métricas, benchmarks e insights accionables. Construido con Python, FastAPI y Next.js.",
+      en: "Input business data and get comprehensive analysis with metrics, benchmarks, and actionable insights. Built with Python and FastAPI.",
+      es: "Ingresa datos de tu negocio y obtén un análisis completo con métricas, benchmarks e insights accionables. Construido con Python y FastAPI.",
     },
-    tags: ["Python", "FastAPI", "Pydantic", "Next.js", "TypeScript", "Recharts"],
+    tags: ["Python", "FastAPI", "Pydantic", "Recharts"],
     slug: "business-analysis",
     wip: false,
   },
@@ -144,7 +146,7 @@ const projects = [
       en: "Track inflation and convert prices across 30 years of Argentine economic history. Using official data from FRED and OECD sources.",
       es: "Rastrea la inflación y convierte precios a través de 30 años de historia económica argentina. Utilizando datos oficiales de FRED y OECD.",
     },
-    tags: ["Python", "FastAPI", "FRED API", "SQLAlchemy", "Next.js", "Recharts"],
+    tags: ["Python", "FastAPI", "FRED API", "SQLAlchemy", "Recharts"],
     slug: "inflation-tracker",
     wip: false,
   },
@@ -154,37 +156,37 @@ const projects = [
       es: "Predictor de Partidos de Fútbol"
     },
     description: {
-      en: "Predict match outcomes using machine learning models trained on Argentine Primera División data. Built with Python, FastAPI, scikit-learn, and XGBoost.",
-      es: "Predice resultados de partidos usando modelos de aprendizaje automático entrenados con datos de la Primera División Argentina. Construido con Python, FastAPI, scikit-learn y XGBoost.",
+      en: "Predict match outcomes using machine learning models trained on Argentine Primera División data. Built with Python, FastAPI, and scikit-learn.",
+      es: "Predice resultados de partidos usando modelos de aprendizaje automático entrenados con datos de la Primera División Argentina. Construido con Python, FastAPI y scikit-learn.",
     },
-    tags: ["Python", "FastAPI", "scikit-learn", "XGBoost", "Machine Learning", "Next.js"],
+    tags: ["Python", "FastAPI", "scikit-learn", "Machine Learning"],
     slug: "match-predictor",
     wip: false,
   },
   {
     title: {
-      en: "Predictive Maintenance System",
-      es: "Sistema de Mantenimiento Predictivo"
+      en: "Argentine Wine Recommendation Engine",
+      es: "Motor de Recomendación de Vinos Argentinos"
     },
     description: {
-      en: "IoT-based predictive maintenance system using time-series analysis and neural networks to forecast equipment failures.",
-      es: "Sistema de mantenimiento predictivo basado en IoT usando análisis de series temporales y redes neuronales para predecir fallas de equipos.",
+      en: "Personalized wine recommendations using collaborative filtering and content-based algorithms. Analyzes user preferences, regional characteristics, and tasting profiles from Mendoza and other Argentine wine regions. Built with surprise/scikit-learn and includes a user preference learning system.",
+      es: "Recomendaciones personalizadas de vinos usando filtrado colaborativo y algoritmos basados en contenido. Analiza preferencias de usuarios, características regionales y perfiles de degustación de Mendoza y otras regiones vitivinícolas argentinas. Construido con surprise/scikit-learn e incluye un sistema de aprendizaje de preferencias de usuarios.",
     },
-    tags: ["Python", "PyTorch", "TimescaleDB", "MQTT"],
-    slug: "predictive-maintenance-system",
+    tags: ["Python", "scikit-learn", "surprise", "Machine Learning", "Recommendation Systems"],
+    slug: "wine-recommendation-engine",
     wip: true,
   },
   {
     title: {
-      en: "Distributed Data Processor",
-      es: "Procesador de Datos Distribuido"
+      en: "Agricultural Commodity Price Forecasting",
+      es: "Pronóstico de Precios de Commodities Agrícolas"
     },
     description: {
-      en: "Scalable data processing framework handling petabytes of data using Apache Spark and Kubernetes orchestration.",
-      es: "Framework de procesamiento de datos escalable manejando petabytes de datos usando Apache Spark y orquestación con Kubernetes.",
+      en: "Multi-variate time series forecasting for Argentine agricultural exports (soy, wheat, corn) using LSTM/Prophet models. Incorporates weather data, global market indicators, and seasonal patterns. Features confidence intervals and scenario analysis for farmers and exporters.",
+      es: "Pronóstico de series temporales multivariadas para exportaciones agrícolas argentinas (soja, trigo, maíz) usando modelos LSTM/Prophet. Incorpora datos meteorológicos, indicadores del mercado global y patrones estacionales. Incluye intervalos de confianza y análisis de escenarios para agricultores y exportadores.",
     },
-    tags: ["Spark", "Kubernetes", "Scala", "Kafka"],
-    slug: "distributed-data-processor",
+    tags: ["Python", "LSTM", "Prophet", "Time Series", "Forecasting"],
+    slug: "agricultural-commodity-forecasting",
     wip: true,
   },
 ]
@@ -251,7 +253,7 @@ export default function Portfolio() {
         </nav>
       </div>
 
-      <section id="about" className="relative pt-32 pb-24" style={{ backgroundColor: `rgb(var(--background))` }}>
+      <section id="about" className="relative pt-32 pb-0" style={{ backgroundColor: `rgb(var(--background))` }}>
         <div className="absolute inset-0 overflow-hidden">
           <svg className="absolute right-0 h-full w-2/5" viewBox="0 0 100 100" preserveAspectRatio="none">
             <path d="M 20,0 Q 10,30 15,60 Q 18,80 10,100 L 100,100 L 100,0 Z" fill={`rgb(var(--accent))`} />
@@ -282,8 +284,8 @@ export default function Portfolio() {
               </div>
             </div>
 
-            <div className="relative flex items-center justify-center">
-              <div className="relative h-64 w-64 sm:h-80 sm:w-80 lg:h-96 lg:w-96">
+            <div className="relative flex items-end justify-center" style={{ marginBottom: 0, paddingBottom: 0, alignSelf: 'flex-end' }}>
+              <div className="relative h-80 w-80 sm:h-96 sm:w-96 lg:h-[28rem] lg:w-[28rem] xl:h-[32rem] xl:w-[32rem]" style={{ marginBottom: 0, paddingBottom: 0 }}>
                 {/* Decorative circles */}
                 <div className="absolute inset-0 rounded-full border-2 border-black" />
                 <div className="absolute inset-8 rounded-full border border-black" />
@@ -294,13 +296,20 @@ export default function Portfolio() {
                 
                 {/* Profile image or fallback decorative squares */}
                 {!imageError ? (
-                  <div className="absolute left-1/2 top-1/2 h-48 w-48 sm:h-56 sm:w-56 lg:h-64 lg:w-64 -translate-x-1/2 -translate-y-1/2">
-                    <div className="relative h-full w-full">
+                  <div 
+                    className="absolute left-1/2 -translate-x-1/2" 
+                    style={{ 
+                      bottom: 0,
+                      width: '70%',
+                      height: '95%',
+                    }}
+                  >
+                    <div className="relative h-full w-full" style={{ transform: 'scale(1.3)', transformOrigin: 'center bottom' }}>
                       <Image
                         src="/profile-silhouette.png"
                         alt="Rodri"
                         fill
-                        className="object-contain"
+                        className="object-contain object-bottom dark:drop-shadow-2xl dark:opacity-95"
                         onError={() => setImageError(true)}
                         priority
                       />
@@ -365,7 +374,14 @@ export default function Portfolio() {
             </p>
 
             <div className="grid gap-8 md:grid-cols-2">
-              <Card className="group relative overflow-hidden border-2 border-black transition-all hover:shadow-lg">
+              <Card 
+                className="group relative overflow-hidden border-2 border-black transition-all hover:shadow-lg cursor-pointer"
+                onClick={() => {
+                  // Format phone number for WhatsApp (remove spaces and dashes)
+                  const phoneNumber = '+5493512122621';
+                  window.open(`https://wa.me/${phoneNumber}`, '_blank', 'noopener,noreferrer');
+                }}
+              >
                 <div
                   className="absolute right-0 top-0 h-24 w-24 translate-x-8 -translate-y-8 rounded-full"
                   style={{ backgroundColor: `rgb(var(--primary) / 0.05)` }}
@@ -381,7 +397,13 @@ export default function Portfolio() {
                         {t.contact.phone}
                       </p>
                     </div>
-                    <p className="font-mono text-base sm:text-lg">+1 (555) 123-4567</p>
+                    <p className="font-mono text-base sm:text-lg">+54 9 351 212-2621</p>
+                    <p 
+                      className="text-xs opacity-60"
+                      style={{ color: `rgb(var(--muted-foreground))` }}
+                    >
+                      {t.contact.phoneHint}
+                    </p>
                   </div>
                 </div>
               </Card>
@@ -410,7 +432,7 @@ export default function Portfolio() {
                           {t.contact.email}
                         </p>
                       </div>
-                      <p className="font-mono text-base sm:text-lg">hello@example.com</p>
+                      <p className="font-mono text-base sm:text-lg">rodri.perezz.dev@gmail.com</p>
                       <p 
                         className="text-xs opacity-60"
                         style={{ color: `rgb(var(--muted-foreground))` }}

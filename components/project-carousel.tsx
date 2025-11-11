@@ -122,7 +122,7 @@ export function ProjectCarousel({ projects, language, viewProjectText }: Project
         >
           {projects.map((project, index) => (
             <div key={index} className="w-full flex-shrink-0 px-4">
-              <Card className="group relative overflow-hidden border-2 border-gray-300 dark:border-gray-800 dark:bg-[#1E1E1E] bg-[#DCDCDC] rounded-2xl p-6 sm:p-8 transition-all hover:border-primary/50 shadow-xl">
+              <Card className="group relative overflow-hidden border-2 border-gray-300 dark:border-gray-800 dark:bg-[#1E1E1E] bg-[#ABC4FF] rounded-2xl p-6 sm:p-8 transition-all hover:border-primary/50 shadow-xl">
                 {/* Decorative geometric element */}
                 <div className="absolute right-0 top-0 h-32 w-32 translate-x-12 -translate-y-12 rounded-full bg-primary/5 transition-transform group-hover:scale-110" />
                 <div className="absolute bottom-0 left-0 h-24 w-24 -translate-x-8 translate-y-8 rotate-45 bg-muted/50" />

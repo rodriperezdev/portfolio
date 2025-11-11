@@ -31,7 +31,7 @@ const projectData: Record<string, any> = {
         "API RESTful con FastAPI",
       ],
     },
-    technologies: ["Python", "FastAPI", "VADER Sentiment Analyzer", "SQLAlchemy", "PostgreSQL", "Reddit API", "Next.js", "Recharts"],
+    technologies: ["Python", "FastAPI", "VADER Sentiment Analyzer", "SQLAlchemy", "PostgreSQL", "Reddit API", "Recharts"],
     github: "https://github.com/rodriperezdev/sentiment-analysis-backend",
     demo: "/projects/sentiment-analysis",
   },
@@ -184,7 +184,7 @@ const projectData: Record<string, any> = {
       en: "This project provides a comprehensive tool for tracking Argentine inflation from 1995 to present. Using official data from FRED and OECD sources, it allows users to visualize inflation trends and understand the real value of money over time. The price converter is particularly useful for understanding purchasing power changes in Argentina's volatile economic environment.",
       es: "Este proyecto proporciona una herramienta integral para rastrear la inflación argentina desde 1995 hasta el presente. Utilizando datos oficiales de FRED y OECD, permite a los usuarios visualizar tendencias de inflación y comprender el valor real del dinero a lo largo del tiempo. El convertidor de precios es particularmente útil para entender los cambios en el poder adquisitivo en el volátil entorno económico argentino.",
     },
-    tags: ["Python", "FastAPI", "FRED API", "SQLAlchemy", "Next.js", "Recharts"],
+    tags: ["Python", "FastAPI", "FRED API", "SQLAlchemy", "Recharts"],
     features: {
       en: [
         "Historical inflation data from 1995 to present",
@@ -201,7 +201,7 @@ const projectData: Record<string, any> = {
         "API RESTful con FastAPI",
       ],
     },
-    technologies: ["Python", "FastAPI", "FRED API", "SQLAlchemy", "PostgreSQL", "Next.js", "Recharts"],
+    technologies: ["Python", "FastAPI", "FRED API", "SQLAlchemy", "PostgreSQL", "Recharts"],
     github: "https://github.com/rodriperezdev/inflation-tracker-backend",
     demo: "/projects/inflation-tracker",
   },
@@ -211,14 +211,14 @@ const projectData: Record<string, any> = {
       es: "Predictor de Partidos de Fútbol"
     },
     description: {
-      en: "Predict match outcomes using machine learning models trained on Argentine Primera División data. Built with Python, FastAPI, scikit-learn, and XGBoost.",
-      es: "Predice resultados de partidos usando modelos de aprendizaje automático entrenados con datos de la Primera División Argentina. Construido con Python, FastAPI, scikit-learn y XGBoost.",
+      en: "Predict match outcomes using machine learning models trained on Argentine Primera División data. Built with Python, FastAPI, and scikit-learn.",
+      es: "Predice resultados de partidos usando modelos de aprendizaje automático entrenados con datos de la Primera División Argentina. Construido con Python, FastAPI y scikit-learn.",
     },
     fullDescription: {
-      en: "This project uses machine learning to predict football match outcomes in the Argentine Primera División. The model analyzes team form, goal differences, head-to-head records, and other statistical features to make predictions. Built with Python, FastAPI, scikit-learn, and XGBoost, it provides accurate predictions with probability distributions for each possible outcome.",
-      es: "Este proyecto utiliza aprendizaje automático para predecir resultados de partidos de fútbol en la Primera División Argentina. El modelo analiza la forma de los equipos, diferencias de goles, historial cara a cara y otras características estadísticas para hacer predicciones. Construido con Python, FastAPI, scikit-learn y XGBoost, proporciona predicciones precisas con distribuciones de probabilidad para cada resultado posible.",
+      en: "This project uses machine learning to predict football match outcomes in the Argentine Primera División. The model analyzes team form, goal differences, head-to-head records, and other statistical features to make predictions. Built with Python, FastAPI and scikit-learn, it provides accurate predictions with probability distributions for each possible outcome.",
+      es: "Este proyecto utiliza aprendizaje automático para predecir resultados de partidos de fútbol en la Primera División Argentina. El modelo analiza la forma de los equipos, diferencias de goles, historial cara a cara y otras características estadísticas para hacer predicciones. Construido con Python, FastAPI y scikit-learn, proporciona predicciones precisas con distribuciones de probabilidad para cada resultado posible.",
     },
-    tags: ["Python", "FastAPI", "scikit-learn", "XGBoost", "Machine Learning", "Next.js"],
+    tags: ["Python", "FastAPI", "scikit-learn", "Machine Learning"],
     features: {
       en: [
         "Machine learning-based match prediction",
@@ -235,7 +235,7 @@ const projectData: Record<string, any> = {
         "API RESTful con FastAPI",
       ],
     },
-    technologies: ["Python", "FastAPI", "scikit-learn", "XGBoost", "pandas", "Next.js", "TypeScript"],
+    technologies: ["Python", "FastAPI", "scikit-learn", "pandas", "TypeScript"],
     github: "https://github.com/rodriperezdev/match-predictor-backend",
     demo: "/projects/match-predictor",
   },
@@ -245,14 +245,14 @@ const projectData: Record<string, any> = {
       es: "Análisis de Negocios"
     },
     description: {
-      en: "Input business data and get comprehensive analysis with metrics, benchmarks, and actionable insights. Built with Python, FastAPI, and Next.js.",
-      es: "Ingresa datos de tu negocio y obtén un análisis completo con métricas, benchmarks e insights accionables. Construido con Python, FastAPI y Next.js.",
+      en: "Input business data and get comprehensive analysis with metrics, benchmarks, and actionable insights. Built with Python and FastAPI.",
+      es: "Ingresa datos de tu negocio y obtén un análisis completo con métricas, benchmarks e insights accionables. Construido con Python y FastAPI.",
     },
     fullDescription: {
       en: "This tool allows you to input your business metrics and receive a comprehensive analysis including financial calculations, industry benchmarking, and actionable insights. Perfect for startups, small businesses, and entrepreneurs who want to understand their business performance and identify areas for improvement. The system calculates key metrics like gross margin, net margin, CAC, LTV, burn rate, and more, then compares them against industry benchmarks to provide actionable recommendations.",
       es: "Esta herramienta te permite ingresar las métricas de tu negocio y recibir un análisis completo que incluye cálculos financieros, benchmarking de la industria e insights accionables. Perfecto para startups, pequeñas empresas y emprendedores que quieren entender el rendimiento de su negocio e identificar áreas de mejora. El sistema calcula métricas clave como margen bruto, margen neto, CAC, LTV, tasa de quema y más, luego las compara con benchmarks de la industria para proporcionar recomendaciones accionables.",
     },
-    tags: ["Python", "FastAPI", "Pydantic", "Next.js", "TypeScript", "Recharts"],
+    tags: ["Python", "FastAPI", "Pydantic", "Recharts"],
     features: {
       en: [
         "Financial metrics calculation (margins, profitability, customer economics)",
@@ -271,7 +271,7 @@ const projectData: Record<string, any> = {
         "Gráficos y visualizaciones interactivas",
       ],
     },
-    technologies: ["Python", "FastAPI", "Pydantic", "pydantic-settings", "Next.js", "TypeScript", "Recharts"],
+    technologies: ["Python", "FastAPI", "Pydantic", "pydantic-settings", "Recharts"],
     github: "https://github.com/rodriperezdev/business-analysis-backend",
     demo: "/projects/business-analysis",
   },
