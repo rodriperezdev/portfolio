@@ -4,7 +4,7 @@ import { useState } from "react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { Sun, Moon, Github, Linkedin, Mail, Phone, X } from "lucide-react"
+import { Sun, Moon, GithubIcon, LinkedinIcon, Mail, Phone, X } from "lucide-react"
 import { LanguageToggle } from "@/components/language-toggle"
 import { ProjectCarousel } from "@/components/project-carousel"
 import { ContactForm } from "@/components/ContactForm"
@@ -483,7 +483,7 @@ export default function Portfolio() {
                   asChild
                 >
                   <a href="https://github.com/rodriperezdev" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-                    <Github className="h-5 w-5" />
+                    <GithubIcon className="h-5 w-5" />
                   </a>
                 </Button>
                 <Button
@@ -493,7 +493,7 @@ export default function Portfolio() {
                   asChild
                 >
                   <a href="https://www.linkedin.com/in/rodri-perez/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-                    <Linkedin className="h-5 w-5" />
+                    <LinkedinIcon className="h-5 w-5" />
                   </a>
                 </Button>
               </div>
