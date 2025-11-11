@@ -32,7 +32,7 @@ const projectData: Record<string, any> = {
       ],
     },
     technologies: ["Python", "FastAPI", "VADER Sentiment Analyzer", "SQLAlchemy", "PostgreSQL", "Reddit API", "Next.js", "Recharts"],
-    github: "https://github.com/yourusername/sentiment-api",
+    github: "https://github.com/rodri-perezz1998/sentiment-analysis-api",
     demo: "/projects/sentiment-analysis",
   },
   "ml-pipeline-orchestrator": {
@@ -202,7 +202,7 @@ const projectData: Record<string, any> = {
       ],
     },
     technologies: ["Python", "FastAPI", "FRED API", "SQLAlchemy", "PostgreSQL", "Next.js", "Recharts"],
-    github: "https://github.com/yourusername/inflation-tracker",
+    github: "https://github.com/rodri-perezz1998/inflation-tracker-api",
     demo: "/projects/inflation-tracker",
   },
   "match-predictor": {
@@ -236,7 +236,7 @@ const projectData: Record<string, any> = {
       ],
     },
     technologies: ["Python", "FastAPI", "scikit-learn", "XGBoost", "pandas", "Next.js", "TypeScript"],
-    github: "https://github.com/rodri-perezz1998/match-predictor-backend",
+    github: "https://github.com/rodri-perezz1998/match-predictor",
     demo: "/projects/match-predictor",
   },
   "business-analysis": {
@@ -272,7 +272,7 @@ const projectData: Record<string, any> = {
       ],
     },
     technologies: ["Python", "FastAPI", "Pydantic", "pydantic-settings", "Next.js", "TypeScript", "Recharts"],
-    github: "https://github.com/yourusername/business-analysis-backend",
+    github: "https://github.com/rodri-perezz1998/business-analyzer-api",
     demo: "/projects/business-analysis",
   },
 }

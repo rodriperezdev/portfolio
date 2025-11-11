@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Sun, Moon, Github, Linkedin, Mail, Phone } from "lucide-react"
@@ -37,7 +38,7 @@ const translations = {
     },
     footer: {
       rights: "All rights reserved.",
-      crafted: "Crafted with precision by",
+      message: "If you have any questions or ideas for any of my projects feel free to contact me!",
     },
   },
   es: {
@@ -67,12 +68,25 @@ const translations = {
     },
     footer: {
       rights: "Todos los derechos reservados.",
-      crafted: "Creado con precisión por",
+      message: "Si tienes alguna pregunta o idea para cualquiera de mis proyectos, no dudes en contactarme!",
     },
   },
 }
 
 const projects = [
+  {
+    title: {
+      en: "Business Analytics",
+      es: "Análisis de Negocios"
+    },
+    description: {
+      en: "Input business data and get comprehensive analysis with metrics, benchmarks, and actionable insights. Built with Python, FastAPI, and Next.js.",
+      es: "Ingresa datos de tu negocio y obtén un análisis completo con métricas, benchmarks e insights accionables. Construido con Python, FastAPI y Next.js.",
+    },
+    tags: ["Python", "FastAPI", "Pydantic", "Next.js", "TypeScript", "Recharts"],
+    slug: "business-analysis",
+    wip: false,
+  },
   {
     title: {
       en: "Argentine Political Sentiment Analysis",
@@ -84,6 +98,7 @@ const projects = [
     },
     tags: ["Python", "FastAPI", "NLP", "VADER", "Reddit API", "SQLAlchemy"],
     slug: "sentiment-analysis",
+    wip: false,
   },
   {
     title: {
@@ -96,6 +111,7 @@ const projects = [
     },
     tags: ["Python", "FastAPI", "FRED API", "SQLAlchemy", "Next.js", "Recharts"],
     slug: "inflation-tracker",
+    wip: false,
   },
   {
     title: {
@@ -108,18 +124,7 @@ const projects = [
     },
     tags: ["Python", "FastAPI", "scikit-learn", "XGBoost", "Machine Learning", "Next.js"],
     slug: "match-predictor",
-  },
-  {
-    title: {
-      en: "Business Analytics",
-      es: "Análisis de Negocios"
-    },
-    description: {
-      en: "Input business data and get comprehensive analysis with metrics, benchmarks, and actionable insights. Built with Python, FastAPI, and Next.js.",
-      es: "Ingresa datos de tu negocio y obtén un análisis completo con métricas, benchmarks e insights accionables. Construido con Python, FastAPI y Next.js.",
-    },
-    tags: ["Python", "FastAPI", "Pydantic", "Next.js", "TypeScript", "Recharts"],
-    slug: "business-analysis",
+    wip: false,
   },
   {
     title: {
@@ -132,6 +137,7 @@ const projects = [
     },
     tags: ["Python", "PyTorch", "TimescaleDB", "MQTT"],
     slug: "predictive-maintenance-system",
+    wip: true,
   },
   {
     title: {
@@ -144,12 +150,14 @@ const projects = [
     },
     tags: ["Spark", "Kubernetes", "Scala", "Kafka"],
     slug: "distributed-data-processor",
+    wip: true,
   },
 ]
 
 export default function Portfolio() {
   const { theme, toggleTheme } = useTheme()
   const { language, toggleLanguage } = useLanguage()
+  const [imageError, setImageError] = useState(false)
 
   const t = translations[language]
 
@@ -174,19 +182,19 @@ export default function Portfolio() {
           <div className="flex items-center gap-8">
             <button
               onClick={() => scrollToSection("about")}
-              className="text-sm font-medium transition-colors hover:opacity-70"
+              className="text-sm font-medium cursor-pointer transition-all duration-200 hover:scale-110 active:scale-95 hover:bg-[#C1D3FE] dark:hover:bg-[#495057] rounded-md px-3 py-1.5"
             >
               {t.nav.about}
             </button>
             <button
               onClick={() => scrollToSection("projects")}
-              className="text-sm font-medium transition-colors hover:opacity-70"
+              className="text-sm font-medium cursor-pointer transition-all duration-200 hover:scale-110 active:scale-95 hover:bg-[#C1D3FE] dark:hover:bg-[#495057] rounded-md px-3 py-1.5"
             >
               {t.nav.projects}
             </button>
             <button
               onClick={() => scrollToSection("contact")}
-              className="text-sm font-medium transition-colors hover:opacity-70"
+              className="text-sm font-medium cursor-pointer transition-all duration-200 hover:scale-110 active:scale-95 hover:bg-[#C1D3FE] dark:hover:bg-[#495057] rounded-md px-3 py-1.5"
             >
               {t.nav.contact}
             </button>
@@ -218,20 +226,20 @@ export default function Portfolio() {
             <div className="flex flex-col justify-center">
               <p
                 className="mb-2 text-xs sm:text-sm font-medium uppercase tracking-wider"
-                style={{ color: `rgb(var(--muted-foreground))` }}
+                style={{ color: theme === "dark" ? `rgb(255, 255, 255)` : `rgb(var(--muted-foreground))` }}
               >
                 {t.hero.greeting}
               </p>
-              <h1 className="mb-4 text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight">
+              <h1 className="mb-4 text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight" style={{ color: theme === "dark" ? `rgb(255, 255, 255)` : undefined }}>
                 {t.hero.name}
               </h1>
-              <p className="mb-6 text-lg sm:text-xl" style={{ color: `rgb(var(--muted-foreground))` }}>
+              <p className="mb-6 text-lg sm:text-xl" style={{ color: theme === "dark" ? `rgb(255, 255, 255)` : `rgb(var(--muted-foreground))` }}>
                 {t.hero.title}
               </p>
               <div className="max-h-32 sm:max-h-40 overflow-y-auto sm:overflow-y-hidden pr-2">
                 <p
                   className="text-sm sm:text-base text-pretty leading-relaxed"
-                  style={{ color: `rgb(var(--muted-foreground))` }}
+                  style={{ color: theme === "dark" ? `rgb(255, 255, 255)` : `rgb(var(--muted-foreground))` }}
                 >
                   {t.hero.description}
                 </p>
@@ -240,20 +248,38 @@ export default function Portfolio() {
 
             <div className="relative flex items-center justify-center">
               <div className="relative h-64 w-64 sm:h-80 sm:w-80 lg:h-96 lg:w-96">
+                {/* Decorative circles */}
                 <div className="absolute inset-0 rounded-full border-2 border-black" />
                 <div className="absolute inset-8 rounded-full border border-black" />
                 <div
                   className="absolute inset-16 rounded-full"
                   style={{ backgroundColor: `rgb(var(--muted) / 0.2)` }}
                 />
-                <div
-                  className="absolute left-1/2 top-1/2 h-32 w-32 -translate-x-1/2 -translate-y-1/2 rounded-2xl border-2 border-black rotate-12"
-                  style={{ backgroundColor: `rgb(var(--primary) / 0.05)` }}
-                />
-                <div
-                  className="absolute left-1/2 top-1/2 h-24 w-24 -translate-x-1/2 -translate-y-1/2 rounded-xl border border-black -rotate-6"
-                  style={{ backgroundColor: `rgb(var(--primary) / 0.1)` }}
-                />
+                
+                {/* Profile image or fallback decorative squares */}
+                {!imageError ? (
+                  <div className="absolute left-1/2 top-1/2 h-48 w-48 sm:h-56 sm:w-56 lg:h-64 lg:w-64 -translate-x-1/2 -translate-y-1/2 relative">
+                    <Image
+                      src="/profile-silhouette.png"
+                      alt="Rodri"
+                      fill
+                      className="object-contain"
+                      onError={() => setImageError(true)}
+                      priority
+                    />
+                  </div>
+                ) : (
+                  <>
+                    <div
+                      className="absolute left-1/2 top-1/2 h-32 w-32 -translate-x-1/2 -translate-y-1/2 rounded-2xl border-2 border-black rotate-12"
+                      style={{ backgroundColor: `rgb(var(--primary) / 0.05)` }}
+                    />
+                    <div
+                      className="absolute left-1/2 top-1/2 h-24 w-24 -translate-x-1/2 -translate-y-1/2 rounded-xl border border-black -rotate-6"
+                      style={{ backgroundColor: `rgb(var(--primary) / 0.1)` }}
+                    />
+                  </>
+                )}
               </div>
             </div>
           </div>
@@ -346,7 +372,7 @@ export default function Portfolio() {
                   className="h-12 w-12 rounded-full bg-transparent border-2 border-black hover:shadow-md"
                   asChild
                 >
-                  <a href="https://github.com" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                  <a href="https://github.com/rodri-perezz1998" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
                     <Github className="h-5 w-5" />
                   </a>
                 </Button>
@@ -356,7 +382,7 @@ export default function Portfolio() {
                   className="h-12 w-12 rounded-full bg-transparent border-2 border-black hover:shadow-md"
                   asChild
                 >
-                  <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                  <a href="https://www.linkedin.com/in/rodri-perez/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
                     <Linkedin className="h-5 w-5" />
                   </a>
                 </Button>
@@ -374,10 +400,10 @@ export default function Portfolio() {
             style={{ color: `rgb(var(--muted-foreground))` }}
           >
             <p>
-              © 2025 {t.hero.name}. {t.footer.rights}
+              © 2025 Rodrigo Pérez. {t.footer.rights}
             </p>
             <p>
-              {t.footer.crafted} {t.hero.name}
+              {t.footer.message}
             </p>
           </div>
         </div>

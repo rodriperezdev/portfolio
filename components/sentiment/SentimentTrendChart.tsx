@@ -163,6 +163,8 @@ export function SentimentTrendChart({
   const [hoveredEvent, setHoveredEvent] = useState<string | null>(null);
   const [eventCoordinates, setEventCoordinates] = useState<{ [key: string]: { cx: number; cy: number } }>({});
 
+  // Force re-render when data changes by using the latest date as a dependency
+  const dataKey = data.length > 0 ? `${data.length}-${data[data.length - 1]?.date || ''}` : 'empty';
   const smoothedData = getSmoothedTrendData(data, timeRange);
   
   // Log visible events for debugging
@@ -208,8 +210,8 @@ export function SentimentTrendChart({
           </div>
         )}
       </div>
-      <ResponsiveContainer width="100%" height={300}>
-        <LineChart data={smoothedData}>
+      <ResponsiveContainer width="100%" height={300} key={dataKey}>
+        <LineChart data={smoothedData} key={dataKey}>
           <CartesianGrid strokeDasharray="3 3" stroke={theme === 'dark' ? '#ffffff10' : '#00000010'} />
           <XAxis 
             dataKey="date" 

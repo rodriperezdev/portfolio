@@ -19,6 +19,7 @@ interface Project {
   }
   tags: string[]
   slug: string
+  wip?: boolean
 }
 
 interface ProjectCarouselProps {
@@ -127,7 +128,12 @@ export function ProjectCarousel({ projects, language, viewProjectText }: Project
                 <div className="absolute bottom-0 left-0 h-24 w-24 -translate-x-8 translate-y-8 rotate-45 bg-muted/50" />
 
                 <div className="relative">
-                  <h3 className="mb-4 text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">{project.title[language]}</h3>
+                  <h3 className="mb-4 text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
+                    {project.title[language]}
+                    {project.wip && (
+                      <span className="ml-2 text-sm font-normal text-gray-500 dark:text-gray-400">(W.I.P)</span>
+                    )}
+                  </h3>
                   <div className="mb-6 max-h-24 sm:max-h-32 overflow-y-auto sm:overflow-y-hidden pr-2">
                     <p className="text-sm sm:text-base text-pretty leading-relaxed text-gray-700 dark:text-gray-300">
                       {project.description[language]}
@@ -145,16 +151,27 @@ export function ProjectCarousel({ projects, language, viewProjectText }: Project
                     ))}
                   </div>
 
-                  <Button
-                    variant="outline"
-                    className="group/btn border-2 border-green-600 dark:border-green-500 text-green-700 dark:text-green-500 bg-white dark:bg-transparent hover:bg-green-600 dark:hover:bg-green-600 hover:border-green-600 dark:hover:border-green-600 hover:text-white dark:hover:text-white text-sm sm:text-base font-medium transition-all duration-200"
-                    asChild
-                  >
-                    <Link href={`/project/${project.slug}`}>
+                  {project.wip ? (
+                    <Button
+                      variant="outline"
+                      disabled
+                      className="border-2 border-gray-400 dark:border-gray-600 text-gray-500 dark:text-gray-500 bg-gray-100 dark:bg-gray-800 cursor-not-allowed opacity-60 text-sm sm:text-base font-medium"
+                    >
                       {viewProjectText}
-                      <ExternalLink className="ml-2 h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
-                    </Link>
-                  </Button>
+                      <ExternalLink className="ml-2 h-4 w-4" />
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="outline"
+                      className="group/btn border-2 border-green-600 dark:border-green-500 text-green-700 dark:text-green-500 bg-white dark:bg-transparent hover:bg-green-600 dark:hover:bg-green-600 hover:border-green-600 dark:hover:border-green-600 hover:text-white dark:hover:text-white text-sm sm:text-base font-medium transition-all duration-200"
+                      asChild
+                    >
+                      <Link href={`/project/${project.slug}`}>
+                        {viewProjectText}
+                        <ExternalLink className="ml-2 h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
+                      </Link>
+                    </Button>
+                  )}
                 </div>
               </Card>
             </div>

@@ -19,7 +19,7 @@ const translations = {
     liveDemo: "Live Demo",
     footer: {
       rights: "All rights reserved.",
-      crafted: "Crafted with precision by",
+      message: "If you have any questions or ideas for any of my projects feel free to contact me!",
     },
   },
   es: {
@@ -31,7 +31,7 @@ const translations = {
     liveDemo: "Demo en Vivo",
     footer: {
       rights: "Todos los derechos reservados.",
-      crafted: "Creado con precisión por",
+      message: "Si tienes alguna pregunta o idea para cualquiera de mis proyectos, no dudes en contactarme!",
     },
   },
 }
@@ -151,9 +151,9 @@ export function ProjectPageClient({ project, slug }: { project: any; slug: strin
 
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row flex-wrap gap-4">
-            <Button size="lg" className="border-black text-sm sm:text-base" asChild>
-              <a href={project.github} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-                <Github className="h-5 w-5" />
+            <Button size="lg" className="border-black text-sm sm:text-base cursor-pointer transition-all duration-200 hover:scale-105 active:scale-95 hover:shadow-lg" asChild>
+              <a href={project.github} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 group">
+                <Github className="h-5 w-5 transition-transform duration-200 group-hover:rotate-12" />
                 {t.viewOnGithub}
               </a>
             </Button>
@@ -168,8 +168,8 @@ export function ProjectPageClient({ project, slug }: { project: any; slug: strin
             className="flex flex-col items-center justify-between gap-4 text-center text-sm md:flex-row md:text-left"
             style={{ color: `rgb(var(--muted-foreground))` }}
           >
-            <p>© 2025 Your Name. {t.footer.rights}</p>
-            <p>{t.footer.crafted} Your Name</p>
+            <p>© 2025 Rodrigo Pérez. {t.footer.rights}</p>
+            <p>{t.footer.message}</p>
           </div>
         </div>
       </footer>

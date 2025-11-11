@@ -275,7 +275,7 @@ export default function BusinessAnalysisPage() {
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4">
             {t.title}
           </h1>
-          <p className="text-base sm:text-lg text-[rgb(var(--foreground))] opacity-60 max-w-3xl mb-4 sm:mb-6">
+          <p className="text-base sm:text-lg max-w-3xl mb-4 sm:mb-6" style={{ color: theme === "dark" ? `rgb(255, 255, 255)` : `rgb(var(--foreground))`, opacity: theme === "dark" ? 1 : 0.6 }}>
             {t.subtitle}
           </p>
           <div className="flex gap-2 flex-wrap mb-4 sm:mb-6">
@@ -286,16 +286,10 @@ export default function BusinessAnalysisPage() {
             ))}
           </div>
           <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4">
-            <Button size="lg" className="border-black text-sm sm:text-base min-h-[44px] w-full sm:w-auto" asChild>
-              <a href="https://github.com/yourusername/business-analysis-backend" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
-                <Github className="h-5 w-5" />
+            <Button size="lg" className="border-black text-sm sm:text-base min-h-[44px] w-full sm:w-auto cursor-pointer transition-all duration-200 hover:scale-105 active:scale-95 hover:shadow-lg group" asChild>
+              <a href="https://github.com/rodri-perezz1998/business-analyzer-api" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
+                <Github className="h-5 w-5 transition-transform duration-200 group-hover:rotate-12" />
                 {t.viewCode}
-              </a>
-            </Button>
-            <Button size="lg" variant="outline" className="border-black bg-transparent text-sm sm:text-base min-h-[44px] w-full sm:w-auto" asChild>
-              <a href={`${API_BASE_URL}/docs`} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
-                <ExternalLink className="h-5 w-5" />
-                {t.apiDocs}
               </a>
             </Button>
           </div>
@@ -303,12 +297,12 @@ export default function BusinessAnalysisPage() {
 
         {/* Overview */}
         <div className="mb-8 sm:mb-12 border border-[rgb(var(--foreground))]/10 rounded-2xl p-4 sm:p-6 md:p-8 bg-[rgb(var(--card))] shadow-sm">
-          <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">{t.overview}</h2>
-          <p className="text-sm sm:text-base text-[rgb(var(--foreground))] opacity-70 leading-relaxed mb-4">
+          <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4" style={{ color: theme === "dark" ? `rgb(255, 255, 255)` : undefined }}>{t.overview}</h2>
+          <p className="text-sm sm:text-base leading-relaxed mb-4" style={{ color: theme === "dark" ? `rgb(255, 255, 255)` : `rgb(var(--foreground))`, opacity: theme === "dark" ? 1 : 0.7 }}>
             {t.overviewText}
           </p>
           <div className="mt-4 pt-4 border-t border-[rgb(var(--foreground))]/10">
-            <p className="text-xs sm:text-sm text-[rgb(var(--foreground))] opacity-60 italic leading-relaxed">
+            <p className="text-xs sm:text-sm italic leading-relaxed" style={{ color: theme === "dark" ? `rgb(255, 255, 255)` : `rgb(var(--foreground))`, opacity: theme === "dark" ? 0.8 : 0.6 }}>
               {t.disclaimer}
             </p>
           </div>
@@ -388,6 +382,25 @@ export default function BusinessAnalysisPage() {
           </div>
         )}
       </div>
+
+      {/* Footer */}
+      <footer className="relative py-8 border-t border-black mt-12" style={{ backgroundColor: `rgb(var(--accent))` }}>
+        <div className="container mx-auto px-6">
+          <div
+            className="flex flex-col items-center justify-between gap-4 text-center text-sm md:flex-row md:text-left"
+            style={{ color: `rgb(var(--muted-foreground))` }}
+          >
+            <p style={{ color: theme === "dark" ? `rgb(255, 255, 255)` : undefined }}>
+              © 2025 Rodrigo Pérez. {language === 'en' ? 'All rights reserved.' : 'Todos los derechos reservados.'}
+            </p>
+            <p style={{ color: theme === "dark" ? `rgb(255, 255, 255)` : undefined }}>
+              {language === 'en' 
+                ? 'If you have any questions or ideas for any of my projects feel free to contact me!'
+                : 'Si tienes alguna pregunta o idea para cualquiera de mis proyectos, no dudes en contactarme!'}
+            </p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
