@@ -40,10 +40,10 @@ export function useInflationData(apiUrl: string) {
             headers: { 'Content-Type': 'application/json' }
           });
           if (!healthCheck.ok) {
-            console.warn('⚠️ Health check failed:', healthCheck.status);
+            console.warn('[WARNING] Health check failed:', healthCheck.status);
           }
         } catch (healthErr) {
-          console.error('❌ Backend server is not reachable.');
+          console.error('[ERROR] Backend server is not reachable.');
           throw new Error(`Cannot connect to backend server at ${apiUrl}. Please make sure the inflation-tracker-backend server is running.`);
         }
         

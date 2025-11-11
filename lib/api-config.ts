@@ -91,7 +91,7 @@ export function getApiUrl(project: 'inflation' | 'sentiment' | 'match-predictor'
   }
   
   if (process.env.NODE_ENV === 'development') {
-    console.log(`🔧 ${project.toUpperCase()} API URL:`, url);
+    console.log(`[INFO] ${project.toUpperCase()} API URL:`, url);
   }
   
   return url;
@@ -111,16 +111,16 @@ export const API_URLS = {
 // Validate API URLs in development
 if (process.env.NODE_ENV === 'development') {
   if (!process.env.NEXT_PUBLIC_INFLATION_API_URL) {
-    console.warn('⚠️ NEXT_PUBLIC_INFLATION_API_URL not set, using default: http://localhost:8002');
+    console.warn('[WARNING] NEXT_PUBLIC_INFLATION_API_URL not set, using default: http://localhost:8002');
   }
   if (!process.env.NEXT_PUBLIC_SENTIMENT_API_URL) {
-    console.warn('⚠️ NEXT_PUBLIC_SENTIMENT_API_URL not set, using default: http://localhost:8000');
+    console.warn('[WARNING] NEXT_PUBLIC_SENTIMENT_API_URL not set, using default: http://localhost:8000');
   }
   if (!process.env.NEXT_PUBLIC_MATCH_PREDICTOR_API_URL) {
-    console.warn('⚠️ NEXT_PUBLIC_MATCH_PREDICTOR_API_URL not set, using default: http://localhost:8003');
+    console.warn('[WARNING] NEXT_PUBLIC_MATCH_PREDICTOR_API_URL not set, using default: http://localhost:8003');
   }
   if (!process.env.NEXT_PUBLIC_BUSINESS_ANALYSIS_API_URL) {
-    console.warn('⚠️ NEXT_PUBLIC_BUSINESS_ANALYSIS_API_URL not set, using default: http://localhost:8004');
+    console.warn('[WARNING] NEXT_PUBLIC_BUSINESS_ANALYSIS_API_URL not set, using default: http://localhost:8004');
   }
 }
 

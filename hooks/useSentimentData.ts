@@ -57,14 +57,14 @@ export function useSentimentData(apiBaseUrl: string, timeRange: TimeRange): UseS
         postsRes.json()
       ]);
       
-      console.log('📈 Trend data points:', trendData.length);
-      console.log('📊 Current sentiment:', currentData);
-      console.log('🔥 Topics:', topicsData.length);
-      console.log('📝 Recent posts:', postsData.length);
+      console.log('[INFO] Trend data points:', trendData.length);
+      console.log('[INFO] Current sentiment:', currentData);
+      console.log('[INFO] Topics:', topicsData.length);
+      console.log('[INFO] Recent posts:', postsData.length);
       
       // Debug: Log dates to help find political events
       if (trendData.length > 0) {
-        console.log('📅 Date range in data:', {
+        console.log('[INFO] Date range in data:', {
           first: trendData[0].date,
           last: trendData[trendData.length - 1].date,
           allDates: trendData.map((d: any) => d.date)
@@ -101,14 +101,14 @@ export function useSentimentData(apiBaseUrl: string, timeRange: TimeRange): UseS
       }
       
       const collectResult = await collectResponse.json();
-      console.log('✅ Collection result:', collectResult);
-      console.log(`📊 Collected ${collectResult.posts_collected} new posts`);
+      console.log('[OK] Collection result:', collectResult);
+      console.log(`[OK] Collected ${collectResult.posts_collected} new posts`);
       
       // Step 2: Now fetch the updated data
       setIsCollecting(false);
-      console.log('🔄 Fetching updated data...');
+      console.log('[INFO] Fetching updated data...');
       await fetchData(true, 'Failed to refresh data. Make sure the API is running.');
-      console.log('✅ Data refreshed!');
+      console.log('[OK] Data refreshed!');
       
     } catch (error) {
       console.error('Error during refresh:', error);

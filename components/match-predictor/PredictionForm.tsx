@@ -70,7 +70,7 @@ export function PredictionForm({ apiUrl, teams, translations: t, language = 'en'
       console.log('Prediction result:', result);
       setPrediction(result);
     } catch (err) {
-      console.error('❌ Prediction error:', err);
+      console.error('[ERROR] Prediction error:', err);
       const errorMessage = err instanceof Error ? err.message : 'Failed to get prediction';
       setError(errorMessage);
       setPrediction(null);

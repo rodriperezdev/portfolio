@@ -55,7 +55,7 @@ export function PriceConverter({ apiUrl, language: _language, theme, translation
       
       setConversion(result);
     } catch (err) {
-      console.error('❌ Conversion error:', err);
+      console.error('[ERROR] Conversion error:', err);
       const errorMessage = err instanceof Error ? err.message : 'Failed to convert price';
       setError(errorMessage);
       setConversion(null);
