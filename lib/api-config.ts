@@ -23,9 +23,9 @@ const getInflationApiUrl = () => {
     return process.env.NEXT_PUBLIC_INFLATION_API_URL;
   }
   // Only use production URL if explicitly in production mode
-  if (process.env.NODE_ENV === 'production') {
-    return 'https://inflation-api.yourdomain.com'; // Update with your production URL
-  }
+  // if (process.env.NODE_ENV === 'production') {
+    // return 'https://inflation-api.yourdomain.com'; // Update with your production URL
+  // }
   // Default to localhost for development
   return 'http://localhost:8002';
 };
@@ -38,9 +38,9 @@ const getSentimentApiUrl = () => {
     return process.env.NEXT_PUBLIC_SENTIMENT_API_URL;
   }
   // Only use production URL if explicitly in production mode
-  if (process.env.NODE_ENV === 'production') {
-    return 'https://sentiment-api.yourdomain.com'; // Update with your production URL
-  }
+  // if (process.env.NODE_ENV === 'production') {
+    // return 'https://sentiment-api.yourdomain.com'; // Update with your production URL
+  // }
   // Default to localhost for development
   return 'http://localhost:8000';
 };
@@ -53,9 +53,9 @@ const getMatchPredictorApiUrl = () => {
     return process.env.NEXT_PUBLIC_MATCH_PREDICTOR_API_URL;
   }
   // Only use production URL if explicitly in production mode
-  if (process.env.NODE_ENV === 'production') {
-    return 'https://match-predictor-api.yourdomain.com'; // Update with your production URL
-  }
+  // if (process.env.NODE_ENV === 'production') {
+    // return 'https://match-predictor-api.yourdomain.com'; // Update with your production URL
+  // }
   // Default to localhost for development
   return 'http://localhost:8003';
 };
@@ -68,9 +68,9 @@ const getBusinessAnalysisApiUrl = () => {
     return process.env.NEXT_PUBLIC_BUSINESS_ANALYSIS_API_URL;
   }
   // Only use production URL if explicitly in production mode
-  if (process.env.NODE_ENV === 'production') {
-    return 'https://business-analysis-api.yourdomain.com'; // Update with your production URL
-  }
+  // if (process.env.NODE_ENV === 'production') {
+    // return 'https://business-analysis-api.yourdomain.com'; // Update with your production URL
+  // }
   // Default to localhost for development
   return 'http://localhost:8004';
 };
