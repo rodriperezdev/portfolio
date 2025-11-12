@@ -163,12 +163,12 @@ export function ProjectCarousel({ projects, language, viewProjectText }: Project
                   ) : (
                     <Button
                       variant="outline"
-                      className="group/btn border-2 border-green-600 dark:border-green-500 text-green-700 dark:text-green-500 bg-white dark:bg-transparent hover:bg-green-600 dark:hover:bg-green-600 hover:border-green-600 dark:hover:border-green-600 hover:text-white dark:hover:text-white text-sm sm:text-base font-medium transition-all duration-200"
+                      className="group/btn border-2 border-black dark:border-white/20 cursor-pointer text-sm sm:text-base font-medium transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] hover:shadow-lg"
                       asChild
                     >
                       <Link href={`/project/${project.slug}`}>
                         {viewProjectText}
-                        <ExternalLink className="ml-2 h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
+                        <ExternalLink className="ml-2 h-4 w-4 transition-transform group-hover/btn:rotate-12" />
                       </Link>
                     </Button>
                   )}

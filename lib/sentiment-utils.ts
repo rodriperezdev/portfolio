@@ -168,6 +168,128 @@ export function getVisibleEvents(
   });
 }
 
+// Calculate optimal tooltip position to avoid collision with line tooltip
+export function getOptimalTooltipPosition(
+  dotX: number,
+  dotY: number,
+  tooltipWidth: number,
+  tooltipHeight: number,
+  graphWidth: number,
+  graphHeight: number,
+  lineTooltipPosition: { centerX: number; side?: 'left' | 'right' } | null
+): { x: number; y: number } {
+  const margin = 20;
+  const safeDistance = 280;
+
+  // Check if we're in the rightmost zone (75-100%)
+  const isRightmostZone = dotX > (graphWidth * 0.75);
+
+  let x: number, y: number;
+
+  if (isRightmostZone && lineTooltipPosition) {
+    // SPECIAL HANDLING: We're in the rightmost zone
+    // Date tooltip should be on the RIGHT (if our implementation is correct)
+    // So position dot tooltip on the LEFT
+    
+    const dateTooltipIsOnRight = lineTooltipPosition.side === 'right';
+    
+    if (dateTooltipIsOnRight) {
+      // Perfect! Date is on right, we can safely position on left
+      x = dotX - tooltipWidth - margin;
+      y = dotY - tooltipHeight / 2;
+      
+      // Make sure we don't go off left edge
+      if (x < 10) {
+        // If too far left, position above instead
+        x = Math.max(dotX - tooltipWidth / 2, 10);
+        y = dotY - tooltipHeight - margin;
+      }
+    } else {
+      // Date tooltip hasn't flipped yet or something went wrong
+      // Position above to avoid collision
+      x = Math.max(dotX - tooltipWidth / 2, 10);
+      y = Math.max(dotY - tooltipHeight - margin - 10, 10);
+    }
+  } else if (lineTooltipPosition) {
+    // Standard positioning for dots in left/middle of graph
+    const lineTooltipX = lineTooltipPosition.centerX;
+    
+    if (Math.abs(dotX - lineTooltipX) < safeDistance) {
+      // Close to line tooltip - avoid collision
+      const lineIsOnLeft = lineTooltipPosition.side === 'left' || lineTooltipX < graphWidth / 2;
+      
+      if (lineIsOnLeft) {
+        // Line tooltip on left, position dot tooltip on right
+        x = Math.min(dotX + margin, graphWidth - tooltipWidth - 10);
+        y = dotY + margin;
+      } else {
+        // Line tooltip on right, position dot tooltip on left
+        x = Math.max(dotX - tooltipWidth - margin, 10);
+        y = dotY + margin;
+      }
+    } else {
+      // Far from line tooltip - use standard positioning
+      const shouldPositionRight = dotX < graphWidth / 2;
+      
+      if (shouldPositionRight) {
+        x = dotX + margin;
+        y = dotY - tooltipHeight / 2;
+      } else {
+        x = dotX - tooltipWidth - margin;
+        y = dotY - tooltipHeight / 2;
+      }
+    }
+  } else {
+    // No line tooltip - use standard positioning
+    if (dotX > graphWidth - 250) {
+      // Dot near right edge - position to the left
+      x = Math.max(10, dotX - tooltipWidth - margin);
+      y = Math.max(10, Math.min(dotY - tooltipHeight / 2, graphHeight - tooltipHeight - 10));
+    } else if (dotX < 250) {
+      // Dot near left edge - position to the right
+      x = Math.min(dotX + margin, graphWidth - tooltipWidth - 10);
+      y = Math.max(10, Math.min(dotY - tooltipHeight / 2, graphHeight - tooltipHeight - 10));
+    } else {
+      // Standard middle positioning
+      const shouldPositionRight = dotX < graphWidth / 2;
+      if (shouldPositionRight) {
+        x = dotX + margin;
+        y = dotY - tooltipHeight / 2;
+      } else {
+        x = dotX - tooltipWidth - margin;
+        y = dotY - tooltipHeight / 2;
+      }
+    }
+  }
+
+  // Final boundary checks
+  x = Math.max(10, Math.min(x, graphWidth - tooltipWidth - 10));
+  y = Math.max(10, Math.min(y, graphHeight - tooltipHeight - 10));
+
+  return { x, y };
+}
+
+// Debounce utility function
+export function debounce<T extends (...args: any[]) => void>(
+  func: T,
+  wait: number
+): (...args: Parameters<T>) => void {
+  let timeout: NodeJS.Timeout | null = null;
+  
+  return function executedFunction(...args: Parameters<T>) {
+    const later = () => {
+      timeout = null;
+      func(...args);
+    };
+    
+    if (timeout) {
+      clearTimeout(timeout);
+    }
+    timeout = setTimeout(later, wait);
+  };
+}
+
+
 
 
 

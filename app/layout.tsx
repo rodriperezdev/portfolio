@@ -8,9 +8,19 @@ const _geist = Geist({ subsets: ["latin"] })
 const _geistMono = Geist_Mono({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Portfolio | Back-End & Data Science Developer",
-  description: "Bilingual developer portfolio showcasing back-end and data science projects",
-  generator: "v0.app",
+  title: "Portfolio | Pérez Rodrigo",
+  description: "Personal Portfolio for Backend Developer",
+  icons: {
+    icon: [
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon.ico', sizes: 'any' }
+    ],
+    apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }
+    ],
+  },
+  manifest: '/site.webmanifest',
 }
 
 export default function RootLayout({

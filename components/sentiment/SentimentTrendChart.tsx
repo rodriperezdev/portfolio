@@ -1,10 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Customized } from 'recharts';
 import { SentimentTrend, TimeRange } from '@/types/sentiment';
 import { Language } from '@/data/sentiment-translations';
-import { formatDate, formatFullDate, formatPercentage, getSentimentColor, getSmoothedTrendData, getEventForDate, getVisibleEvents } from '@/lib/sentiment-utils';
+import { formatDate, formatFullDate, formatPercentage, getSentimentColor, getSmoothedTrendData, getEventForDate, getVisibleEvents, getOptimalTooltipPosition, debounce } from '@/lib/sentiment-utils';
 
 interface SentimentTrendChartProps {
   data: SentimentTrend[];
@@ -26,18 +26,39 @@ const EventMarker = ({
   theme, 
   timeRange, 
   onHover, 
-  onLeave 
+  onLeave,
+  isHovered
 }: any) => {
   const xAxisHeight = timeRange === 'yearly' ? 60 : 30;
   const plotAreaHeight = 300 - xAxisHeight;
   const xAxisLineY = plotAreaHeight;
   const dotY = cy;
   
+  const handleMouseEnter = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onHover(eventDate, cx, dotY);
+  };
+  
+  const handleMouseLeave = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onLeave();
+  };
+  
   return (
-    <g
-      onMouseEnter={() => onHover(eventDate, cx, dotY)}
-      onMouseLeave={onLeave}
-    >
+    <g>
+      {/* Invisible wider line for easier hover detection */}
+      <line
+        x1={cx}
+        y1={0}
+        x2={cx}
+        y2={xAxisLineY}
+        stroke="transparent"
+        strokeWidth={30}
+        style={{ cursor: 'pointer' }}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        pointerEvents="stroke"
+      />
       {/* Grey dashed line from top of chart (y=0) down to dot */}
       <line
         x1={cx}
@@ -47,7 +68,8 @@ const EventMarker = ({
         stroke={theme === 'dark' ? '#9ca3af' : '#6b7280'}
         strokeWidth={1.5}
         strokeDasharray="4,4"
-        opacity={0.6}
+        opacity={isHovered ? 0.9 : 0.6}
+        style={{ pointerEvents: 'none' }}
       />
       {/* Grey dashed line from dot down to x-axis - stops exactly at x-axis line */}
       <line
@@ -58,7 +80,8 @@ const EventMarker = ({
         stroke={theme === 'dark' ? '#9ca3af' : '#6b7280'}
         strokeWidth={1.5}
         strokeDasharray="4,4"
-        opacity={0.6}
+        opacity={isHovered ? 0.9 : 0.6}
+        style={{ pointerEvents: 'none' }}
       />
       {/* Blue dot on negative line */}
       <circle
@@ -68,18 +91,53 @@ const EventMarker = ({
         fill="#3b82f6"
         stroke={theme === 'dark' ? '#ffffff' : '#1e293b'}
         strokeWidth={2.5}
-        style={{ cursor: 'pointer', transition: 'all 0.2s' }}
+        style={{ cursor: 'pointer' }}
+        opacity={isHovered ? 1 : 0.9}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
       />
+      {/* Glow effect on hover */}
+      {isHovered && (
+        <circle
+          cx={cx}
+          cy={dotY}
+          r={12}
+          fill="#3b82f6"
+          opacity={0.2}
+          style={{ pointerEvents: 'none' }}
+        />
+      )}
     </g>
   );
 };
 
 // Custom Tooltip that positions itself to avoid event labels
-const CustomTooltip = ({ active, payload, label, coordinate, theme, language, hoveredEvent, eventCoordinates, politicalEvents, formatPercentage, formatFullDate }: any) => {
-  if (!active || !payload || !payload.length) return null;
+const CustomTooltip = ({ active, payload, label, coordinate, theme, language, debouncedSetLineTooltipPosition }: any) => {
+  const [tooltipSide, setTooltipSide] = React.useState<'left' | 'right'>('left');
+  const tooltipRef = React.useRef<HTMLDivElement>(null);
   
-  const event = getEventForDate(label, politicalEvents);
-  const isEventHovered = hoveredEvent && hoveredEvent === label;
+  // Track tooltip position and determine which side to show it on
+  React.useEffect(() => {
+    if (active && coordinate && tooltipRef.current) {
+      const chartWidth = 600; // Approximate chart width
+      const relativeX = coordinate.x / chartWidth;
+      const shouldBeOnRight = relativeX > 0.75;
+      const newSide = shouldBeOnRight ? 'right' : 'left';
+      
+      if (newSide !== tooltipSide) {
+        setTooltipSide(newSide);
+      }
+      
+      debouncedSetLineTooltipPosition({
+        centerX: coordinate.x,
+        side: newSide
+      });
+    } else {
+      debouncedSetLineTooltipPosition(null);
+    }
+  }, [active, coordinate, tooltipSide, debouncedSetLineTooltipPosition]);
+  
+  if (!active || !payload || !payload.length || !coordinate) return null;
   
   const tooltipStyle: any = {
     backgroundColor: theme === 'dark' ? '#282828' : '#f8f6f3',
@@ -90,55 +148,45 @@ const CustomTooltip = ({ active, payload, label, coordinate, theme, language, ho
     margin: 0,
   };
   
-  // If hovering over event, check for collision and reposition tooltip
-  if (isEventHovered && coordinate && event) {
-    const eventCoords = eventCoordinates[hoveredEvent];
-    if (eventCoords) {
-      const labelText = event.label[language];
-      const fontSize = 13;
-      const charWidth = fontSize * 0.55;
-      const estimatedTextWidth = labelText.length * charWidth;
-      const padding = 10;
-      const eventLabelWidth = Math.max(estimatedTextWidth + (padding * 2), 70);
-      const eventLabelHeight = 32;
-      
-      const eventLabelX = eventCoords.cx - eventLabelWidth / 2;
-      const eventLabelY = eventCoords.cy - 50;
-      const eventLabelRight = eventLabelX + eventLabelWidth;
-      const eventLabelBottom = eventLabelY + eventLabelHeight;
-      
-      const tooltipWidth = 150;
-      const tooltipHeight = 100;
-      
-      let tooltipX = coordinate.x + 80;
-      let tooltipY = coordinate.y - 40;
-      
-      const tooltipRight = tooltipX + tooltipWidth;
-      const tooltipBottom = tooltipY + tooltipHeight;
-      
-      const horizontalOverlap = !(tooltipRight < eventLabelX || tooltipX > eventLabelRight);
-      const verticalOverlap = !(tooltipBottom < eventLabelY || tooltipY > eventLabelBottom);
-      
-      if (horizontalOverlap && verticalOverlap) {
-        if (eventLabelBottom + tooltipHeight < 300) {
-          tooltipY = eventLabelBottom + 10;
-          tooltipX = eventCoords.cx - tooltipWidth / 2;
-        } else {
-          tooltipX = eventLabelRight + 20;
-          tooltipY = eventCoords.cy - tooltipHeight / 2;
-        }
-      }
-      
-      tooltipStyle.position = 'absolute';
-      tooltipStyle.left = `${tooltipX}px`;
-      tooltipStyle.top = `${tooltipY}px`;
-      tooltipStyle.zIndex = 999;
-      tooltipStyle.minWidth = '140px';
-    }
+  const tooltipWidth = 180;
+  const tooltipHeight = 120;
+  const chartWidth = 600;
+  const chartHeight = 300;
+  const edgePadding = 10;
+  
+  // Smart positioning based on which side the tooltip should be on
+  let tooltipX: number;
+  let tooltipY = coordinate.y - 40;
+  
+  if (tooltipSide === 'right') {
+    tooltipX = coordinate.x + 15;
+  } else {
+    tooltipX = coordinate.x - tooltipWidth - 15;
   }
   
+  // Boundary checks
+  if (tooltipX + tooltipWidth > chartWidth - edgePadding) {
+    tooltipX = coordinate.x - tooltipWidth - 20;
+  }
+  if (tooltipX < edgePadding) {
+    tooltipX = edgePadding;
+  }
+  if (tooltipY < edgePadding) {
+    tooltipY = edgePadding;
+  }
+  if (tooltipY + tooltipHeight > chartHeight - edgePadding) {
+    tooltipY = chartHeight - tooltipHeight - edgePadding;
+  }
+  
+  tooltipStyle.position = 'absolute';
+  tooltipStyle.left = `${tooltipX}px`;
+  tooltipStyle.top = `${tooltipY}px`;
+  tooltipStyle.zIndex = 50;
+  tooltipStyle.minWidth = '160px';
+  tooltipStyle.transition = 'left 0.15s ease-out';
+  
   return (
-    <div style={tooltipStyle}>
+    <div ref={tooltipRef} style={tooltipStyle}>
       <p style={{ marginBottom: '8px', fontWeight: 600, fontSize: '13px' }}>
         {formatFullDate(label, language)}
       </p>
@@ -162,6 +210,20 @@ export function SentimentTrendChart({
 }: SentimentTrendChartProps) {
   const [hoveredEvent, setHoveredEvent] = useState<string | null>(null);
   const [eventCoordinates, setEventCoordinates] = useState<{ [key: string]: { cx: number; cy: number } }>({});
+  
+  // Track line tooltip position for collision detection
+  const [lineTooltipPosition, setLineTooltipPosition] = useState<{
+    centerX: number;
+    side?: 'left' | 'right';
+  } | null>(null);
+  
+  // Debounced setter for line tooltip position
+  const debouncedSetLineTooltipPosition = useMemo(
+    () => debounce((position: { centerX: number; side?: 'left' | 'right' } | null) => {
+      setLineTooltipPosition(position);
+    }, 50),
+    []
+  );
 
   // Force re-render when data changes by using the latest date as a dependency
   const dataKey = data.length > 0 ? `${data.length}-${data[data.length - 1]?.date || ''}` : 'empty';
@@ -194,7 +256,7 @@ export function SentimentTrendChart({
               <button
                 key={range}
                 onClick={() => onTimeRangeChange(range)}
-                className={`px-3 py-2 sm:py-1.5 text-xs font-medium rounded-md transition-all min-h-[44px] sm:min-h-0 flex-1 sm:flex-none ${
+                className={`px-3 py-2 sm:py-1.5 text-xs font-medium rounded-md transition-all min-h-[44px] sm:min-h-0 flex-1 sm:flex-none cursor-pointer ${
                   timeRange === range
                     ? theme === 'dark'
                       ? 'bg-white text-black'
@@ -235,11 +297,7 @@ export function SentimentTrendChart({
               <CustomTooltip 
                 theme={theme}
                 language={language}
-                hoveredEvent={hoveredEvent}
-                eventCoordinates={eventCoordinates}
-                politicalEvents={politicalEvents}
-                formatPercentage={formatPercentage}
-                formatFullDate={formatFullDate}
+                debouncedSetLineTooltipPosition={debouncedSetLineTooltipPosition}
               />
             }
             wrapperStyle={{ 
@@ -267,6 +325,7 @@ export function SentimentTrendChart({
               const event = getEventForDate(dotProps.payload?.date, politicalEvents);
               if (event) {
                 const { key, ...restProps } = dotProps;
+                const isHovered = hoveredEvent === event.date;
                 return (
                   <EventMarker 
                     key={`event-${event.date}`}
@@ -278,6 +337,7 @@ export function SentimentTrendChart({
                     timeRange={timeRange}
                     onHover={handleEventHover}
                     onLeave={handleEventLeave}
+                    isHovered={isHovered}
                   />
                 );
               }
@@ -317,20 +377,31 @@ export function SentimentTrendChart({
               const rectHeight = 32;
               
               const chartWidth = props.width || 600;
+              const chartHeight = 300;
+              
+              // Use collision detection to position label
+              const tooltipPos = getOptimalTooltipPosition(
+                coords.cx,
+                coords.cy,
+                rectWidth,
+                rectHeight,
+                chartWidth,
+                chartHeight,
+                lineTooltipPosition
+              );
+              
+              let rectX = tooltipPos.x;
+              let rectY = tooltipPos.y;
+              
+              // Final boundary checks
               const margin = 10;
-              
-              let rectX = coords.cx - rectWidth / 2;
-              
-              if (rectX < margin) {
-                rectX = margin;
-              } else if (rectX + rectWidth > chartWidth - margin) {
+              if (rectX < margin) rectX = margin;
+              if (rectX + rectWidth > chartWidth - margin) {
                 rectX = chartWidth - rectWidth - margin;
               }
-              
-              const topMargin = 10;
-              let rectY = coords.cy - 50;
-              if (rectY < topMargin) {
-                rectY = topMargin;
+              if (rectY < margin) rectY = margin;
+              if (rectY + rectHeight > chartHeight - margin) {
+                rectY = chartHeight - rectHeight - margin;
               }
               
               return (
@@ -340,21 +411,20 @@ export function SentimentTrendChart({
                     y={rectY}
                     width={rectWidth}
                     height={rectHeight}
-                    fill={theme === 'dark' ? '#1e293b' : '#ffffff'}
-                    stroke="#3b82f6"
-                    strokeWidth={2}
+                    fill="#3b82f6"
+                    fillOpacity={1}
                     rx={8}
-                    opacity={1}
-                    filter="drop-shadow(0 4px 6px rgba(0,0,0,0.1))"
+                    stroke={theme === 'dark' ? '#ffffff' : '#1e293b'}
+                    strokeWidth={2}
                   />
                   <text
                     x={rectX + rectWidth / 2}
-                    y={rectY + 20}
+                    y={rectY + rectHeight / 2}
                     textAnchor="middle"
-                    fill={theme === 'dark' ? '#ffffff' : '#000000'}
+                    dominantBaseline="middle"
+                    fill="white"
                     fontSize={fontSize}
                     fontWeight={fontWeight}
-                    dominantBaseline="middle"
                     style={{ pointerEvents: 'none' }}
                   >
                     {labelText}

@@ -38,6 +38,8 @@ export function useSentimentData(apiBaseUrl: string, timeRange: TimeRange): UseS
       
       const days = getDaysFromTimeRange(timeRange);
       
+      console.log(`[INFO] Fetching sentiment data for timeRange: ${timeRange} (${days} days)`);
+      
       // Fetch all data in parallel
       const [trendRes, currentRes, topicsRes, postsRes] = await Promise.all([
         fetch(`${apiBaseUrl}/sentiment/trend?days=${days}`),
@@ -123,14 +125,25 @@ export function useSentimentData(apiBaseUrl: string, timeRange: TimeRange): UseS
     fetchData();
   }, [fetchData]);
 
-  // Check if collecting is in progress
+  // Check if collecting is in progress and backfill status
   useEffect(() => {
     const checkCollecting = async () => {
       try {
         const res = await fetch(`${apiBaseUrl}/status`);
         if (res.ok) {
           const data = await res.json();
-          setIsCollecting(data.is_collecting || false);
+          // Check both old is_collecting field and new backfill status
+          const isBackfilling = data.backfill?.in_progress || false;
+          const isScheduledCollection = data.is_collecting || false;
+          setIsCollecting(isBackfilling || isScheduledCollection);
+          
+          // Log backfill status for debugging
+          if (isBackfilling) {
+            console.log('[INFO] Historical backfill in progress...');
+            if (data.backfill?.posts_collected) {
+              console.log(`[INFO] Posts collected so far: ${data.backfill.posts_collected}`);
+            }
+          }
         }
       } catch (err) {
         // Silently fail - not critical

@@ -40,7 +40,14 @@ export function SentimentDistribution({ currentSentiment, theme, translations: t
             contentStyle={{ 
               backgroundColor: theme === 'dark' ? '#282828' : '#f8f6f3',
               border: '1px solid ' + (theme === 'dark' ? '#ffffff20' : '#00000020'),
-              borderRadius: '12px'
+              borderRadius: '12px',
+              color: theme === 'dark' ? '#ffffff' : '#000000'
+            }}
+            itemStyle={{
+              color: theme === 'dark' ? '#ffffff' : '#000000'
+            }}
+            labelStyle={{
+              color: theme === 'dark' ? '#ffffff' : '#000000'
             }}
             formatter={(value: number) => formatPercentage(value)} 
           />
@@ -49,6 +56,7 @@ export function SentimentDistribution({ currentSentiment, theme, translations: t
     </div>
   );
 }
+
 
 
 
