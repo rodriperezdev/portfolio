@@ -18,14 +18,12 @@
 
 // Inflation Tracker API
 // Always prioritize environment variable, fallback based on NODE_ENV
+// Inflation API
 const getInflationApiUrl = () => {
-  if (process.env.NEXT_PUBLIC_INFLATION_API_URL) {
-    return process.env.NEXT_PUBLIC_INFLATION_API_URL;
+  // Remove _URL suffix to match Vercel
+  if (process.env.NEXT_PUBLIC_INFLATION_API) {
+    return process.env.NEXT_PUBLIC_INFLATION_API;
   }
-  // Only use production URL if explicitly in production mode
-  // if (process.env.NODE_ENV === 'production') {
-    // return 'https://inflation-api.yourdomain.com'; // Update with your production URL
-  // }
   // Default to localhost for development
   return 'http://localhost:8002';
 };
@@ -34,13 +32,10 @@ export const INFLATION_API_URL = getInflationApiUrl();
 
 // Sentiment Analysis API
 const getSentimentApiUrl = () => {
-  if (process.env.NEXT_PUBLIC_SENTIMENT_API_URL) {
-    return process.env.NEXT_PUBLIC_SENTIMENT_API_URL;
+  // Remove _URL suffix to match Vercel
+  if (process.env.NEXT_PUBLIC_SENTIMENT_API) {
+    return process.env.NEXT_PUBLIC_SENTIMENT_API;
   }
-  // Only use production URL if explicitly in production mode
-  // if (process.env.NODE_ENV === 'production') {
-    // return 'https://sentiment-api.yourdomain.com'; // Update with your production URL
-  // }
   // Default to localhost for development
   return 'http://localhost:8000';
 };
@@ -49,13 +44,10 @@ export const SENTIMENT_API_URL = getSentimentApiUrl();
 
 // Match Predictor API
 const getMatchPredictorApiUrl = () => {
-  if (process.env.NEXT_PUBLIC_MATCH_PREDICTOR_API_URL) {
-    return process.env.NEXT_PUBLIC_MATCH_PREDICTOR_API_URL;
+  // Remove _URL suffix to match Vercel
+  if (process.env.NEXT_PUBLIC_MATCH_PREDICTOR_API) {
+    return process.env.NEXT_PUBLIC_MATCH_PREDICTOR_API;
   }
-  // Only use production URL if explicitly in production mode
-  // if (process.env.NODE_ENV === 'production') {
-    // return 'https://match-predictor-api.yourdomain.com'; // Update with your production URL
-  // }
   // Default to localhost for development
   return 'http://localhost:8003';
 };
@@ -64,13 +56,10 @@ export const MATCH_PREDICTOR_API_URL = getMatchPredictorApiUrl();
 
 // Business Analysis API
 const getBusinessAnalysisApiUrl = () => {
-  if (process.env.NEXT_PUBLIC_BUSINESS_ANALYSIS_API_URL) {
-    return process.env.NEXT_PUBLIC_BUSINESS_ANALYSIS_API_URL;
+  // Changed to ANALYTICS (not ANALYSIS) and removed _URL suffix to match Vercel
+  if (process.env.NEXT_PUBLIC_BUSINESS_ANALYTICS_API) {
+    return process.env.NEXT_PUBLIC_BUSINESS_ANALYTICS_API;
   }
-  // Only use production URL if explicitly in production mode
-  // if (process.env.NODE_ENV === 'production') {
-    // return 'https://business-analysis-api.yourdomain.com'; // Update with your production URL
-  // }
   // Default to localhost for development
   return 'http://localhost:8004';
 };
@@ -110,17 +99,18 @@ export const API_URLS = {
 
 // Validate API URLs in development
 if (process.env.NODE_ENV === 'development') {
-  if (!process.env.NEXT_PUBLIC_INFLATION_API_URL) {
-    console.warn('[WARNING] NEXT_PUBLIC_INFLATION_API_URL not set, using default: http://localhost:8002');
+  // Updated to match actual Vercel variable names (no _URL suffix)
+  if (!process.env.NEXT_PUBLIC_INFLATION_API) {
+    console.warn('[WARNING] NEXT_PUBLIC_INFLATION_API not set, using default: http://localhost:8002');
   }
-  if (!process.env.NEXT_PUBLIC_SENTIMENT_API_URL) {
-    console.warn('[WARNING] NEXT_PUBLIC_SENTIMENT_API_URL not set, using default: http://localhost:8000');
+  if (!process.env.NEXT_PUBLIC_SENTIMENT_API) {
+    console.warn('[WARNING] NEXT_PUBLIC_SENTIMENT_API not set, using default: http://localhost:8000');
   }
-  if (!process.env.NEXT_PUBLIC_MATCH_PREDICTOR_API_URL) {
-    console.warn('[WARNING] NEXT_PUBLIC_MATCH_PREDICTOR_API_URL not set, using default: http://localhost:8003');
+  if (!process.env.NEXT_PUBLIC_MATCH_PREDICTOR_API) {
+    console.warn('[WARNING] NEXT_PUBLIC_MATCH_PREDICTOR_API not set, using default: http://localhost:8003');
   }
-  if (!process.env.NEXT_PUBLIC_BUSINESS_ANALYSIS_API_URL) {
-    console.warn('[WARNING] NEXT_PUBLIC_BUSINESS_ANALYSIS_API_URL not set, using default: http://localhost:8004');
+  // Changed to ANALYTICS to match Vercel
+  if (!process.env.NEXT_PUBLIC_BUSINESS_ANALYTICS_API) {
+    console.warn('[WARNING] NEXT_PUBLIC_BUSINESS_ANALYTICS_API not set, using default: http://localhost:8004');
   }
 }
-
