@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { SentimentTrend, CurrentSentiment, Topic, Post, TimeRange } from '@/types/sentiment';
 import { getDaysFromTimeRange } from '@/lib/sentiment-utils';
 
@@ -26,6 +26,20 @@ export function useSentimentData(apiBaseUrl: string, timeRange: TimeRange): UseS
   const [isCollecting, setIsCollecting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const apiBaseUrlRef = useRef(apiBaseUrl);
+  const timeRangeRef = useRef(timeRange);
+  const fetchDataRef = useRef<(isRefresh?: boolean, errorMessage?: string) => Promise<void>>();
+  const statusIntervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    apiBaseUrlRef.current = apiBaseUrl;
+  }, [apiBaseUrl]);
+
+  useEffect(() => {
+    timeRangeRef.current = timeRange;
+    fetchDataRef.current?.();
+  }, [timeRange]);
+
   const fetchData = useCallback(async (isRefresh = false, errorMessage?: string) => {
     try {
       if (isRefresh) {
@@ -36,16 +50,17 @@ export function useSentimentData(apiBaseUrl: string, timeRange: TimeRange): UseS
       
       setError(null);
       
-      const days = getDaysFromTimeRange(timeRange);
+      const activeApiBaseUrl = apiBaseUrlRef.current;
+      const days = getDaysFromTimeRange(timeRangeRef.current);
       
-      console.log(`[INFO] Fetching sentiment data for timeRange: ${timeRange} (${days} days)`);
+      console.log(`[INFO] Fetching sentiment data for timeRange: ${timeRangeRef.current} (${days} days)`);
       
       // Fetch all data in parallel
       const [trendRes, currentRes, topicsRes, postsRes] = await Promise.all([
-        fetch(`${apiBaseUrl}/sentiment/trend?days=${days}`),
-        fetch(`${apiBaseUrl}/sentiment/current`),
-        fetch(`${apiBaseUrl}/topics/trending?limit=8`),
-        fetch(`${apiBaseUrl}/posts/recent?limit=10`)
+        fetch(`${activeApiBaseUrl}/sentiment/trend?days=${days}`),
+        fetch(`${activeApiBaseUrl}/sentiment/current`),
+        fetch(`${activeApiBaseUrl}/topics/trending?limit=8`),
+        fetch(`${activeApiBaseUrl}/posts/recent?limit=10`)
       ]);
       
       if (!trendRes.ok || !currentRes.ok || !topicsRes.ok || !postsRes.ok) {
@@ -85,16 +100,30 @@ export function useSentimentData(apiBaseUrl: string, timeRange: TimeRange): UseS
       setLoading(false);
       setRefreshLoading(false);
     }
-  }, [apiBaseUrl, timeRange]);
+  }, []);
+
+  useEffect(() => {
+    fetchDataRef.current = fetchData;
+  }, [fetchData]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  useEffect(() => {
+    fetchDataRef.current?.();
+  }, [apiBaseUrl]);
 
   const refreshData = useCallback(async () => {
     try {
       setRefreshLoading(true);
       setIsCollecting(true);
       
+      const activeApiBaseUrl = apiBaseUrlRef.current;
+
       // Step 1: Trigger Reddit data collection
       console.log('Triggering Reddit data collection...');
-      const collectResponse = await fetch(`${apiBaseUrl}/collect/refresh`, {
+      const collectResponse = await fetch(`${activeApiBaseUrl}/collect/refresh`, {
         method: 'POST',
       });
       
@@ -109,7 +138,7 @@ export function useSentimentData(apiBaseUrl: string, timeRange: TimeRange): UseS
       // Step 2: Now fetch the updated data
       setIsCollecting(false);
       console.log('[INFO] Fetching updated data...');
-      await fetchData(true, 'Failed to refresh data. Make sure the API is running.');
+      await fetchDataRef.current?.(true, 'Failed to refresh data. Make sure the API is running.');
       console.log('[OK] Data refreshed!');
       
     } catch (error) {
@@ -118,18 +147,13 @@ export function useSentimentData(apiBaseUrl: string, timeRange: TimeRange): UseS
       setRefreshLoading(false);
       setIsCollecting(false);
     }
-  }, [apiBaseUrl, fetchData]);
+  }, []);
 
   // Fetch on mount and when timeRange changes
   useEffect(() => {
-    fetchData();
-  }, [fetchData]);
-
-  // Check if collecting is in progress and backfill status
-  useEffect(() => {
     const checkCollecting = async () => {
       try {
-        const res = await fetch(`${apiBaseUrl}/status`);
+        const res = await fetch(`${apiBaseUrlRef.current}/status`);
         if (res.ok) {
           const data = await res.json();
           // Check both old is_collecting field and new backfill status
@@ -151,9 +175,17 @@ export function useSentimentData(apiBaseUrl: string, timeRange: TimeRange): UseS
     };
     
     checkCollecting();
-    const interval = setInterval(checkCollecting, 5000);
-    
-    return () => clearInterval(interval);
+    if (statusIntervalRef.current) {
+      clearInterval(statusIntervalRef.current);
+    }
+    statusIntervalRef.current = setInterval(checkCollecting, 30000);
+
+    return () => {
+      if (statusIntervalRef.current) {
+        clearInterval(statusIntervalRef.current);
+        statusIntervalRef.current = null;
+      }
+    };
   }, [apiBaseUrl]);
 
   return {

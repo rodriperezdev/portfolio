@@ -42,17 +42,26 @@ export function ContactForm({ translations: t, onClose, theme = 'dark' }: Contac
   // Rate limiting state
   const [lastSubmissionTime, setLastSubmissionTime] = useState<number | null>(null)
   const submissionHistoryRef = useRef<number[]>([])
+  const pruneIntervalRef = useRef<NodeJS.Timeout | null>(null)
 
   // Clean old submissions from history (keep last hour)
   useEffect(() => {
-    const interval = setInterval(() => {
+    const pruneHistory = () => {
       const oneHourAgo = Date.now() - 60 * 60 * 1000
       submissionHistoryRef.current = submissionHistoryRef.current.filter(
         time => time > oneHourAgo
       )
-    }, 60000) // Check every minute
+    }
 
-    return () => clearInterval(interval)
+    pruneHistory()
+    pruneIntervalRef.current = setInterval(pruneHistory, 60000) // Check every minute
+
+    return () => {
+      if (pruneIntervalRef.current) {
+        clearInterval(pruneIntervalRef.current)
+        pruneIntervalRef.current = null
+      }
+    }
   }, [])
 
   const checkRateLimit = (): { allowed: boolean; message?: string } => {
