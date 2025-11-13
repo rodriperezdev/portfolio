@@ -44,6 +44,7 @@ export function InflationChart({ data, language, theme, translations: t, loading
   // Event marker states
   const [hoveredEvent, setHoveredEvent] = useState<string | null>(null);
   const [eventCoordinates, setEventCoordinates] = useState<Record<string, { cx: number; cy: number }>>({});
+  const [clickedEvent, setClickedEvent] = useState<string | null>(null);
   
   // Track line tooltip position for collision detection
   const [lineTooltipPosition, setLineTooltipPosition] = useState<{
@@ -123,6 +124,20 @@ export function InflationChart({ data, language, theme, translations: t, loading
       document.body.style.overflow = 'auto';
     };
   }, []);
+
+  // Close expanded event when clicking outside
+  useEffect(() => {
+    if (!clickedEvent) return;
+    
+    const handleClickOutside = (e: MouseEvent) => {
+      if (graphContainerRef.current && !graphContainerRef.current.contains(e.target as Node)) {
+        setClickedEvent(null);
+      }
+    };
+    
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [clickedEvent]);
 
   // Update scroll position when container scrolls
   useEffect(() => {
@@ -464,6 +479,16 @@ export function InflationChart({ data, language, theme, translations: t, loading
                           setHoveredEvent(null);
                         };
                         
+                        const handleClick = (e: React.MouseEvent) => {
+                          e.stopPropagation();
+                          // Toggle: if already clicked, close it; otherwise, open it
+                          if (clickedEvent === eventDate) {
+                            setClickedEvent(null);
+                          } else {
+                            setClickedEvent(eventDate || null);
+                          }
+                        };
+                        
                         return (
                           <g
                             key={`event-${eventDate}`}
@@ -481,6 +506,7 @@ export function InflationChart({ data, language, theme, translations: t, loading
                               style={{ cursor: 'pointer' }}
                               onMouseEnter={handleMouseEnter}
                               onMouseLeave={handleMouseLeave}
+                              onClick={handleClick}
                               pointerEvents="stroke"
                             />
                             {/* Grey dashed lines */}
@@ -515,12 +541,13 @@ export function InflationChart({ data, language, theme, translations: t, loading
                               stroke={theme === 'dark' ? '#ffffff' : '#1e293b'}
                               strokeWidth={2.5}
                               style={{ cursor: 'pointer' }}
-                              opacity={hoveredEvent === eventDate ? 1 : 0.9}
+                              opacity={hoveredEvent === eventDate || clickedEvent === eventDate ? 1 : 0.9}
                               onMouseEnter={handleMouseEnter}
                               onMouseLeave={handleMouseLeave}
+                              onClick={handleClick}
                             />
-                            {/* Glow effect on hover */}
-                            {hoveredEvent === eventDate && (
+                            {/* Glow effect on hover or click */}
+                            {(hoveredEvent === eventDate || clickedEvent === eventDate) && (
                               <circle
                                 cx={dotProps.cx}
                                 cy={dotY}
@@ -577,28 +604,35 @@ export function InflationChart({ data, language, theme, translations: t, loading
                       
                       return (
                         <g>
-                          {hoveredEvent && (() => {
-                            const coords = eventCoordinates[hoveredEvent];
+                          {(hoveredEvent || clickedEvent) && (() => {
+                            const activeEvent = clickedEvent || hoveredEvent;
+                            const coords = eventCoordinates[activeEvent || ''];
                             if (!coords) return null;
                             
-                            const term = presidentialTerms.find(t => t.date === hoveredEvent);
-                            const economicEvent = economicEvents.find(e => e.date === hoveredEvent);
+                            const term = presidentialTerms.find(t => t.date === activeEvent);
+                            const economicEvent = economicEvents.find(e => e.date === activeEvent);
                             const event = term || economicEvent;
                             
                             if (!event) return null;
                             
                             const labelText = event.label[language];
+                            const descriptionText = 'description' in event ? event.description?.[language] : undefined;
+                            const isExpanded = clickedEvent === activeEvent && descriptionText;
                             const isEconomicEvent = !!economicEvent;
+                            
                             const charWidth = fontSize * 0.55;
-                            const estimatedTextWidth = labelText.length * charWidth;
-                            const rectWidth = Math.max(estimatedTextWidth + (padding * 2), minWidth);
+                            const estimatedLabelWidth = labelText.length * charWidth;
+                            const estimatedDescWidth = descriptionText ? descriptionText.length * charWidth : 0;
+                            const maxTextWidth = Math.max(estimatedLabelWidth, estimatedDescWidth);
+                            const rectWidth = Math.max(maxTextWidth + (padding * 2), minWidth);
+                            const expandedRectHeight = isExpanded ? 60 : rectHeight;
                             
                             const chartHeight = 300;
                             const tooltipPos = getOptimalTooltipPosition(
                               coords.cx,
                               coords.cy,
                               rectWidth,
-                              rectHeight,
+                              expandedRectHeight,
                               chartWidth,
                               chartHeight,
                               lineTooltipPosition
@@ -612,17 +646,17 @@ export function InflationChart({ data, language, theme, translations: t, loading
                               rectX = chartWidth - rectWidth - padding;
                             }
                             if (rectY < padding) rectY = padding;
-                            if (rectY + rectHeight > chartHeight - padding) {
-                              rectY = chartHeight - rectHeight - padding;
+                            if (rectY + expandedRectHeight > chartHeight - padding) {
+                              rectY = chartHeight - expandedRectHeight - padding;
                             }
                             
                             return (
-                              <g key={`event-${hoveredEvent}`}>
+                              <g key={`event-${activeEvent}`}>
                                 <rect
                                   x={rectX}
                                   y={rectY}
                                   width={rectWidth}
-                                  height={rectHeight}
+                                  height={expandedRectHeight}
                                   fill={isEconomicEvent ? "#f59e0b" : "#3b82f6"}
                                   fillOpacity={1}
                                   rx={8}
@@ -631,7 +665,7 @@ export function InflationChart({ data, language, theme, translations: t, loading
                                 />
                                 <text
                                   x={rectX + rectWidth / 2}
-                                  y={rectY + rectHeight / 2}
+                                  y={rectY + (isExpanded ? 20 : expandedRectHeight / 2)}
                                   textAnchor="middle"
                                   dominantBaseline="middle"
                                   fill="white"
@@ -641,6 +675,21 @@ export function InflationChart({ data, language, theme, translations: t, loading
                                 >
                                   {labelText}
                                 </text>
+                                {isExpanded && descriptionText && (
+                                  <text
+                                    x={rectX + rectWidth / 2}
+                                    y={rectY + 40}
+                                    textAnchor="middle"
+                                    dominantBaseline="middle"
+                                    fill="white"
+                                    fontSize={fontSize - 2}
+                                    fontWeight={400}
+                                    opacity={0.9}
+                                    pointerEvents="none"
+                                  >
+                                    {descriptionText}
+                                  </text>
+                                )}
                               </g>
                             );
                           })()}
