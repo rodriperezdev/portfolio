@@ -163,7 +163,7 @@ export function ProjectCarousel({ projects, language, viewProjectText }: Project
                   ) : (
                     <Button
                       variant="outline"
-                      className="group/btn border-2 border-black dark:border-white/20 cursor-pointer text-sm sm:text-base font-medium transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] hover:shadow-lg"
+                      className="group/btn border-2 border-black dark:border-white/20 cursor-pointer text-sm sm:text-base font-medium transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] hover:shadow-lg hover:bg-[#C1D3FE] dark:hover:bg-[#495057] dark:hover:text-white"
                       asChild
                     >
                       <Link href={`/project/${project.slug}`}>
