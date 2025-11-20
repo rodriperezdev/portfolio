@@ -2,6 +2,27 @@
 
 import { useState, useEffect } from 'react';
 
+// Helper function to fetch with timeout
+const fetchWithTimeout = async (url: string, options: RequestInit = {}, timeout: number = 60000): Promise<Response> => {
+  const controller = new AbortController();
+  const id = setTimeout(() => controller.abort(), timeout);
+  
+  try {
+    const response = await fetch(url, {
+      ...options,
+      signal: controller.signal,
+    });
+    clearTimeout(id);
+    return response;
+  } catch (error) {
+    clearTimeout(id);
+    if (error instanceof Error && error.name === 'AbortError') {
+      throw new Error('Request timeout - the server took too long to respond. Please try again.');
+    }
+    throw error;
+  }
+};
+
 export interface CommodityData {
   commodity: string;
   model: string;
@@ -46,7 +67,7 @@ export function useAgriculturalData(apiUrl: string) {
         setLoading(true);
         setError(null);
 
-        const response = await fetch(`${apiUrl}/commodities`);
+        const response = await fetchWithTimeout(`${apiUrl}/commodities`, {}, 30000);
         
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -73,8 +94,13 @@ export function useAgriculturalData(apiUrl: string) {
     periods: number = 30
   ): Promise<CommodityData | null> => {
     try {
-      const response = await fetch(
-        `${apiUrl}/forecast/${commodity}?model_type=${modelType}&periods=${periods}`
+      // LSTM takes longer to train, so use 90 second timeout
+      const timeout = modelType === 'lstm' ? 90000 : 60000;
+      
+      const response = await fetchWithTimeout(
+        `${apiUrl}/forecast/${commodity}?model_type=${modelType}&periods=${periods}`,
+        {},
+        timeout
       );
 
       if (!response.ok) {
@@ -94,13 +120,17 @@ export function useAgriculturalData(apiUrl: string) {
     params: ScenarioParams
   ): Promise<ScenarioResult | null> => {
     try {
-      const response = await fetch(`${apiUrl}/scenario/${commodity}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await fetchWithTimeout(
+        `${apiUrl}/scenario/${commodity}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(params),
         },
-        body: JSON.stringify(params),
-      });
+        60000
+      );
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);

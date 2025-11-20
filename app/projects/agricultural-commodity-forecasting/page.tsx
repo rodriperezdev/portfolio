@@ -69,6 +69,8 @@ const translations = {
     modelAccuracy: 'Model Accuracy',
     validationScore: 'Validation score',
     loadingNotice: '⏱️ Note: Forecasts may take 30-60 seconds due to real-time data fetching and model training.',
+    lstmWarning: '⚠️ LSTM models may take up to 90 seconds to train and generate forecasts.',
+    timeoutError: 'Request timeout. The server took too long to respond. Please try again or use the Prophet model for faster results.',
   },
   es: {
     title: 'Pronóstico de Precios de Commodities Agrícolas',
@@ -118,6 +120,8 @@ const translations = {
     modelAccuracy: 'Precisión del Modelo',
     validationScore: 'Puntuación de validación',
     loadingNotice: '⏱️ Nota: Los pronósticos pueden tardar 30-60 segundos debido a la obtención de datos en tiempo real y el entrenamiento del modelo.',
+    lstmWarning: '⚠️ Los modelos LSTM pueden tardar hasta 90 segundos en entrenar y generar pronósticos.',
+    timeoutError: 'Tiempo de espera agotado. El servidor tardó demasiado en responder. Por favor, inténtalo de nuevo o usa el modelo Prophet para resultados más rápidos.',
   },
 };
 
@@ -307,6 +311,13 @@ export default function AgriculturalForecastingPage() {
             />
           </div>
 
+          {/* LSTM Warning */}
+          {selectedModel === 'lstm' && !loading && (
+            <div className="mb-4 p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg text-yellow-800 dark:text-yellow-300 text-sm">
+              {t.lstmWarning}
+            </div>
+          )}
+
           <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-6">
             <Button
               onClick={handleGetForecast}
@@ -323,7 +334,7 @@ export default function AgriculturalForecastingPage() {
 
           {error && (
             <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg text-red-700 dark:text-red-300">
-              {error}
+              {error.includes('timeout') ? t.timeoutError : error}
             </div>
           )}
 
