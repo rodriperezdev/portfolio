@@ -66,8 +66,18 @@ const getBusinessAnalysisApiUrl = () => {
 
 export const BUSINESS_ANALYSIS_API_URL = getBusinessAnalysisApiUrl();
 
+// Agricultural Forecasting API
+const getAgriculturalApiUrl = () => {
+  if (process.env.NEXT_PUBLIC_AGRICULTURAL_API) {
+    return process.env.NEXT_PUBLIC_AGRICULTURAL_API;
+  }
+  return 'http://localhost:8001';
+};
+
+export const AGRICULTURAL_API_URL = getAgriculturalApiUrl();
+
 // Helper to get API URL with validation
-export function getApiUrl(project: 'inflation' | 'sentiment' | 'match-predictor' | 'business-analysis'): string {
+export function getApiUrl(project: 'inflation' | 'sentiment' | 'match-predictor' | 'business-analysis' | 'agricultural'): string {
   let url: string;
   if (project === 'inflation') {
     url = INFLATION_API_URL;
@@ -75,6 +85,8 @@ export function getApiUrl(project: 'inflation' | 'sentiment' | 'match-predictor'
     url = SENTIMENT_API_URL;
   } else if (project === 'match-predictor') {
     url = MATCH_PREDICTOR_API_URL;
+  } else if (project === 'agricultural') {
+    url = AGRICULTURAL_API_URL;
   } else {
     url = BUSINESS_ANALYSIS_API_URL;
   }
@@ -87,7 +99,7 @@ export function getApiUrl(project: 'inflation' | 'sentiment' | 'match-predictor'
 }
 
 // Type-safe project names
-export type ApiProject = 'inflation' | 'sentiment' | 'match-predictor' | 'business-analysis';
+export type ApiProject = 'inflation' | 'sentiment' | 'match-predictor' | 'business-analysis' | 'agricultural';
 
 // Export all API URLs for convenience
 export const API_URLS = {
@@ -95,6 +107,7 @@ export const API_URLS = {
   sentiment: SENTIMENT_API_URL,
   'match-predictor': MATCH_PREDICTOR_API_URL,
   'business-analysis': BUSINESS_ANALYSIS_API_URL,
+  'agricultural': AGRICULTURAL_API_URL,
 } as const;
 
 // Validate API URLs in development
@@ -112,5 +125,8 @@ if (process.env.NODE_ENV === 'development') {
   // Changed to ANALYTICS to match Vercel
   if (!process.env.NEXT_PUBLIC_BUSINESS_ANALYTICS_API) {
     console.warn('[WARNING] NEXT_PUBLIC_BUSINESS_ANALYTICS_API not set, using default: http://localhost:8004');
+  }
+  if (!process.env.NEXT_PUBLIC_AGRICULTURAL_API) {
+    console.warn('[WARNING] NEXT_PUBLIC_AGRICULTURAL_API not set, using default: http://localhost:8001');
   }
 }

@@ -165,19 +165,6 @@ const projects = [
   },
   {
     title: {
-      en: "Argentine Wine Recommendation Engine",
-      es: "Motor de Recomendación de Vinos Argentinos"
-    },
-    description: {
-      en: "Personalized wine recommendations using collaborative filtering and content-based algorithms. Analyzes user preferences, regional characteristics, and tasting profiles from Mendoza and other Argentine wine regions. Built with surprise/scikit-learn and includes a user preference learning system.",
-      es: "Recomendaciones personalizadas de vinos usando filtrado colaborativo y algoritmos basados en contenido. Analiza preferencias de usuarios, características regionales y perfiles de degustación de Mendoza y otras regiones vitivinícolas argentinas. Construido con surprise/scikit-learn e incluye un sistema de aprendizaje de preferencias de usuarios.",
-    },
-    tags: ["Python", "scikit-learn", "surprise", "Machine Learning", "Recommendation Systems"],
-    slug: "wine-recommendation-engine",
-    wip: true,
-  },
-  {
-    title: {
       en: "Agricultural Commodity Price Forecasting",
       es: "Pronóstico de Precios de Commodities Agrícolas"
     },
@@ -187,6 +174,19 @@ const projects = [
     },
     tags: ["Python", "LSTM", "Prophet", "Time Series", "Forecasting"],
     slug: "agricultural-commodity-forecasting",
+    wip: false,
+  },
+  {
+    title: {
+      en: "Argentine Wine Recommendation Engine",
+      es: "Motor de Recomendación de Vinos Argentinos"
+    },
+    description: {
+      en: "Personalized wine recommendations using collaborative filtering and content-based algorithms. Analyzes user preferences, regional characteristics, and tasting profiles from Mendoza and other Argentine wine regions. Built with surprise/scikit-learn and includes a user preference learning system.",
+      es: "Recomendaciones personalizadas de vinos usando filtrado colaborativo y algoritmos basados en contenido. Analiza preferencias de usuarios, características regionales y perfiles de degustación de Mendoza y otras regiones vitivinícolas argentinas. Construido con surprise/scikit-learn e incluye un sistema de aprendizaje de preferencias de usuarios.",
+    },
+    tags: ["Python", "scikit-learn", "surprise", "Machine Learning", "Recommendation Systems"],
+    slug: "wine-recommendation-engine",
     wip: true,
   },
 ]

@@ -275,6 +275,40 @@ const projectData: Record<string, any> = {
     github: "https://github.com/rodriperezdev/business-analysis-backend",
     demo: "/projects/business-analysis",
   },
+  "agricultural-commodity-forecasting": {
+    title: {
+      en: "Agricultural Commodity Price Forecasting",
+      es: "Pronóstico de Precios de Commodities Agrícolas"
+    },
+    description: {
+      en: "Multi-variate time series forecasting for Argentine agricultural exports (soy, wheat, corn) using LSTM/Prophet models.",
+      es: "Pronóstico de series temporales multivariadas para exportaciones agrícolas argentinas (soja, trigo, maíz) usando modelos LSTM/Prophet.",
+    },
+    fullDescription: {
+      en: "This project implements a sophisticated forecasting system for Argentina's key agricultural exports: Soy, Wheat, and Corn. By combining historical price data with weather patterns (temperature, precipitation, soil moisture) and global market indicators, it uses advanced time-series models (LSTM and Prophet) to predict future price trends. The system allows farmers and exporters to run scenario analyses, adjusting weather parameters to see potential impacts on commodity prices, helping in risk management and strategic planning.",
+      es: "Este proyecto implementa un sistema de pronóstico sofisticado para las exportaciones agrícolas clave de Argentina: Soja, Trigo y Maíz. Combinando datos históricos de precios con patrones climáticos (temperatura, precipitación, humedad del suelo) e indicadores del mercado global, utiliza modelos avanzados de series temporales (LSTM y Prophet) para predecir tendencias futuras de precios. El sistema permite a los agricultores y exportadores ejecutar análisis de escenarios, ajustando parámetros climáticos para ver impactos potenciales en los precios de los commodities, ayudando en la gestión de riesgos y planificación estratégica.",
+    },
+    tags: ["Python", "LSTM", "Prophet", "Time Series", "Forecasting"],
+    features: {
+      en: [
+        "Multi-variate time series forecasting",
+        "Integration of weather data (OpenMeteo)",
+        "Scenario analysis for climate impact",
+        "Comparison of LSTM and Prophet models",
+        "Interactive charts with confidence intervals",
+      ],
+      es: [
+        "Pronóstico de series temporales multivariadas",
+        "Integración de datos meteorológicos (OpenMeteo)",
+        "Análisis de escenarios para impacto climático",
+        "Comparación de modelos LSTM y Prophet",
+        "Gráficos interactivos con intervalos de confianza",
+      ],
+    },
+    technologies: ["Python", "FastAPI", "PyTorch (LSTM)", "Prophet", "yfinance", "OpenMeteo API", "Recharts"],
+    github: "https://github.com/rodriperezdev/agricultural-forecasting-backend",
+    demo: "/projects/agricultural-commodity-forecasting",
+  },
 }
 
 export default async function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {
