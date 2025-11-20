@@ -7,9 +7,10 @@ interface ModelSelectorProps {
   value: 'prophet' | 'lstm';
   onChange: (value: 'prophet' | 'lstm') => void;
   translations: any;
+  disabled?: boolean;
 }
 
-export function ModelSelector({ value, onChange, translations: t }: ModelSelectorProps) {
+export function ModelSelector({ value, onChange, translations: t, disabled = false }: ModelSelectorProps) {
   return (
     <div className="space-y-2">
       <Label className="text-sm font-medium">
@@ -23,6 +24,7 @@ export function ModelSelector({ value, onChange, translations: t }: ModelSelecto
             console.log('Prophet clicked, current value:', value);
             onChange('prophet');
           }}
+          disabled={disabled}
           className={`flex-1 min-h-[44px] cursor-pointer transition-all duration-200 ${
             value === 'prophet' 
               ? 'bg-black text-white border-black dark:bg-blue-600 dark:text-white dark:border-blue-600' 
@@ -41,6 +43,7 @@ export function ModelSelector({ value, onChange, translations: t }: ModelSelecto
             console.log('LSTM clicked, current value:', value);
             onChange('lstm');
           }}
+          disabled={disabled}
           className={`flex-1 min-h-[44px] cursor-pointer transition-all duration-200 ${
             value === 'lstm' 
               ? 'bg-black text-white border-black dark:bg-blue-600 dark:text-white dark:border-blue-600' 

@@ -68,6 +68,7 @@ const translations = {
     futurePredictions: 'Future Predictions',
     modelAccuracy: 'Model Accuracy',
     validationScore: 'Validation score',
+    loadingNotice: '⏱️ Note: Forecasts may take 30-60 seconds due to real-time data fetching and model training.',
   },
   es: {
     title: 'Pronóstico de Precios de Commodities Agrícolas',
@@ -116,6 +117,7 @@ const translations = {
     futurePredictions: 'Predicciones Futuras',
     modelAccuracy: 'Precisión del Modelo',
     validationScore: 'Puntuación de validación',
+    loadingNotice: '⏱️ Nota: Los pronósticos pueden tardar 30-60 segundos debido a la obtención de datos en tiempo real y el entrenamiento del modelo.',
   },
 };
 
@@ -295,22 +297,29 @@ export default function AgriculturalForecastingPage() {
               commodities={commodities}
               translations={t}
               language={language}
+              disabled={loading}
             />
             <ModelSelector
               value={selectedModel}
               onChange={handleModelChange}
               translations={t}
+              disabled={loading}
             />
           </div>
 
-          <Button
-            onClick={handleGetForecast}
-            disabled={loading || !selectedCommodity}
-            size="lg"
-            className="w-full sm:w-auto min-h-[44px] border-2 border-[rgb(var(--foreground))]/20 hover:border-[rgb(var(--foreground))]/40 cursor-pointer transition-all duration-200 hover:scale-[1.02] active:scale-95 mb-6"
-          >
-            {loading ? t.forecasting : t.getForecast}
-          </Button>
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-6">
+            <Button
+              onClick={handleGetForecast}
+              disabled={loading || !selectedCommodity}
+              size="lg"
+              className="w-full sm:w-auto min-h-[44px] border-2 border-[rgb(var(--foreground))]/20 hover:border-[rgb(var(--foreground))]/40 cursor-pointer transition-all duration-200 hover:scale-[1.02] active:scale-95"
+            >
+              {loading ? t.forecasting : t.getForecast}
+            </Button>
+            <p className="text-xs sm:text-sm opacity-60 max-w-md">
+              {t.loadingNotice}
+            </p>
+          </div>
 
           {error && (
             <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg text-red-700 dark:text-red-300">

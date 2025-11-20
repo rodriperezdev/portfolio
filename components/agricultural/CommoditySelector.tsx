@@ -9,6 +9,7 @@ interface CommoditySelectorProps {
   commodities: string[];
   translations: any;
   language: 'en' | 'es';
+  disabled?: boolean;
 }
 
 const commodityIcons: Record<string, string> = {
@@ -17,7 +18,7 @@ const commodityIcons: Record<string, string> = {
   corn: '🌽',
 };
 
-export function CommoditySelector({ value, onChange, commodities, translations: t, language }: CommoditySelectorProps) {
+export function CommoditySelector({ value, onChange, commodities, translations: t, language, disabled = false }: CommoditySelectorProps) {
   const getCommodityName = (commodity: string) => {
     // Use translated name from translations object
     const key = commodity as 'soy' | 'wheat' | 'corn';
@@ -29,8 +30,8 @@ export function CommoditySelector({ value, onChange, commodities, translations: 
       <Label htmlFor="commodity" className="text-sm font-medium">
         {t.selectCommodity || 'Select Commodity'}
       </Label>
-      <Select value={value} onValueChange={onChange}>
-        <SelectTrigger id="commodity" className="w-full min-h-[44px]">
+      <Select value={value} onValueChange={onChange} disabled={disabled}>
+        <SelectTrigger id="commodity" className="w-full min-h-[44px]" disabled={disabled}>
           <SelectValue placeholder={t.chooseCommodity || 'Choose a commodity'} />
         </SelectTrigger>
         <SelectContent>
